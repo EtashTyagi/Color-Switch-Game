@@ -1,0 +1,165 @@
+@startuml
+
+skinparam classAttributeIconSize 0
+package Code {
+
+'Main: UML-Done;Code-Skeleton
+class Main {
+    {static}+main(String[] args)
+    {static}-openMainMenu()
+}
+
+'MainMenu: UML-Done;Code-Skeleton
+class MainMenu {
+    -startEndlessButton:           Button
+    -endlessHighScoreLabel:    Label
+    +MainMenu()
+    +startEndlessMode()
+    -loadHighScoreData()
+    -selectSaveFile()
+}
+
+'Game: UML-Done;Code-Skeleton
+abstract class Game {
+    -POSSIBLE_COLORS:             Color[]
+    -BACKGROUND_COLOR:        Color
+    -curScore:                                int
+    -ball:                                          Ball
+    -prevHighScore:                       int
+    -gameObjectQueue:                 Queue<Collidable>
+    -pauseButton:                           Button
+    +Game(previousHighScore: int)
+    {abstract}+updateGameState()
+    {abstract}+saveGameData()
+    +getCurScore():                    int
+    +getRandomColor():             Color
+    +increaseScore(int)
+    +changeBallColor(Color)
+    +spawnObstacle(double[2])
+    +spawnSwitch(double[2])
+    +spawnStar(double[2])
+    +onPausePress()
+}
+
+'EndlessGame: UML-Done;Code-Skeleton
+class EndlessGame extends Game{
+    +EndlessGame(previousHighScore: int)
+    +updateGameState()
+    +saveGameData()
+}
+
+'Collidable: UML-Done;Code-Skeleton
+interface Collidable {
+    {abstract}hasCollidedWithBall(Ball): boolean
+}
+
+'Star: UML-Done;Code-Skeleton
++class Star implements Collidable{
+    +hasCollidedWithBall(Ball): boolean
+}
+
+'Switch: UML-Done;Code-Skeleton
++class Switch implements Collidable{
+    +hasCollidedWithBall(Ball): boolean
+}
+
+'Obstacle: UML-Done;Code-Skeleton
+abstract class Obstacle implements Collidable{
+    -difficulty:         double
+    -colors:             Color[]
+    -passingColor:  Color
+    +Obstacle(difficulty: double, Color[], passingColor: Color)
+    {abstract}+doMovement()
+    +getColors():              Color[]
+    +getPassingColor():    Color
+    +getDifficulty():           double
+}
+'TriangleObstacle: UML-Done;Code-Skeleton
+class TriangleObstacle extends Obstacle{
+    -sideSize:          double
+    -rotateSpeed:    double
+    +TriangleObstacle(difficulty: int, Color[], passingColor: Color)
+    +hasCollidedWithBall(Ball): boolean
+    +doMovement()
+}
+'SquareObstacle: UML-Done;Code-Skeleton
+class SquareObstacle extends Obstacle{
+    -sideSize:          double
+    -rotateSpeed:    double
+    +SquareObstacle(difficulty: int, Color[], passingColor: Color)
+    +hasCollidedWithBall(Ball): boolean
+    +doMovement()
+}
+'SingleCircleObstacle: UML-Done;Code-Skeleton
+class SingleCircleObstacle extends Obstacle{
+    -radius:             double
+    -rotateSpeed:    double
+    +SingleCircleObstacle(difficulty: int, Color[], passingColor: Color)
+    +hasCollidedWithBall(Ball): boolean
+    +doMovement()
+}
+'ConcentricTripleCircleObstacle: UML-Done;Code-Skeleton
+class ConcentricTripleCircleObstacle extends Obstacle{
+    -radius:             double
+    -rotateSpeed:    double
+    +ConcentricTripleCircleObstacle(difficulty: int, Color[], passingColor: Color)
+    +hasCollidedWithBall(Ball): boolean
+    +doMovement()
+}
+'AdjacentDoubleCircleObstacle: UML-Done;Code-Skeleton
+class AdjacentDoubleCircleObstacle extends Obstacle{
+    -radius1:           double
+    -radius2:           double
+    -rotateSpeed:    double
+    +AdjacentDoubleCircleObstacle(difficulty: int, Color[], passingColor: Color)
+    +hasCollidedWithBall(Ball): boolean
+    +doMovement()
+}
+'LinesObstacle: UML-Done;Code-Skeleton
+class LinesObstacle extends Obstacle{
+    -speed:  double
+    +LinesObstacle(difficulty: int, Color[], passingColor: Color)
+    +hasCollidedWithBall(Ball): boolean
+    +doMovement()
+}
+'CrossObstacle: UML-Done;Code-Skeleton
+class CrossObstacle extends Obstacle{
+    -radius:  double
+    -rotateSpeed:  double
+    +CrossObstacle(difficulty: int, Color[], passingColor: Color)
+    +hasCollidedWithBall(Ball): boolean
+    +doMovement()
+}
+
+'Ball: UML-Done;Code-Skeleton
+class Ball {
+    -velocity:    double
+    -color:        Color
+    -radius:      double
+    -xCoord:    double
+    -yCoord:    double
+    +Ball(double, double[2], Color)
+    +getColor():             Color
+    +getVelocity():         double
+    +getRadius():           double
+    +getCoordinates():   double[2]
+    +setColor(Color)
+    +setVelocity(int)
+    +updateCoordinates()
+}
+
+
+
+Main ..> MainMenu
+MainMenu ..> Game
+Game  *--R "1" Ball
+Game *-- "0..*" Collidable
+Ball <..R Collidable
+}
+
+
+
+
+
+
+@enduml
