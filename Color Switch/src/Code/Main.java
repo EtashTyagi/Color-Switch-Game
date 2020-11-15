@@ -1,23 +1,25 @@
 package Code;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+// DONE MAIN
 public class Main extends Application {
+    final public static int STAGE_WIDTH = 800;
+    final public static int STAGE_HEIGHT = 500;
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 300, 275));
-        primaryStage.show();
+        openMainMenu(primaryStage);
     }
     public static void main(String[] args) {
         launch(args);
     }
-    //TODO: Open Main Menu Function
-    private static void openMainMenu() {
+    private static void openMainMenu(Stage primaryStage) {
+        Parent mainMenu = new MainMenu(primaryStage);
+        primaryStage.setTitle("Colour Switch");
+        primaryStage.setScene(new Scene(mainMenu, STAGE_WIDTH, STAGE_HEIGHT));
+        primaryStage.show();
     }
 }
