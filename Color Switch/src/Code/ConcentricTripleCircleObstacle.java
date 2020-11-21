@@ -3,7 +3,7 @@ package Code;
 import javafx.scene.paint.Color;
 
 //TODO: Design Sprite
-public class ConcentricTripleCircleObstacle extends Obstacle{
+public class ConcentricTripleCircleObstacle extends Obstacle {
     private double radius;
     private double rotateSpeed;
 

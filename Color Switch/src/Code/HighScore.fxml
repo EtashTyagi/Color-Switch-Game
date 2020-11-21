@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.collections.FXCollections?>
+
+<VBox style="-fx-background-color: #1c1c1c;" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" spacing="20">
+    <padding><Insets bottom="25" left="25" right="25" top="25" /></padding>
+    <children>
+        <Circle fx:id="backButton" fill="darkgrey" radius="35"/>
+        <Label text=" High Scores " fx:id="highScoreLabel" textFill="chartreuse" translateX="75">
+            <font>
+                <Font name="System Bold" size="48"/>
+            </font>
+        </Label>
+        <TableView style="-fx-background-color: #1c1c1c" >
+            <columns>
+                <TableColumn text="Rank" resizable="false" prefWidth="85" style="-fx-font-size:20px;-fx-label-text-fill: white;">
+                </TableColumn>
+                <TableColumn text="Name" resizable="false" prefWidth="250" style="-fx-font-size:20px;-fx-text-fill: white;">
+                </TableColumn>
+                <TableColumn text="Score" resizable="false" prefWidth="110" style="-fx-font-size:20px;-fx-text-fill: white;">
+                </TableColumn>
+            </columns>
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                </FXCollections>
+            </items>
+        </TableView>
+    </children>
+</VBox>

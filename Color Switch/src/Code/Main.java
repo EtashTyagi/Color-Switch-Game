@@ -12,7 +12,7 @@ import java.io.IOException;
 // DONE MAIN
 public class Main extends Application {
     final public static int STAGE_WIDTH = 500;
-    final public static int STAGE_HEIGHT = 600;
+    final public static int STAGE_HEIGHT = 700;
     @Override
     public void start(Stage primaryStage) throws Exception{
         openMainMenu(primaryStage);

@@ -1,12 +1,13 @@
 package Code;
 
 import javafx.scene.control.Button;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
 import java.util.Queue;
 
 //TODO: Design GUI
-public abstract class Game {
+public abstract class Game extends Pane {
     private final Color[] POSSIBLE_COLOURS = new Color[]{Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW};
     private final Color BACKGROUND_COLOUR = Color.BLACK;
     private int curScore;
