@@ -18,22 +18,22 @@
         <GridPane GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
             <children>
                 <Group fx:id="outerCircle" rotate="-90" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                    <Arc fill="blue" length="90" radiusX="160" radiusY="160" startAngle="90" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
-                    <Arc fill="chartreuse" length="90" radiusX="160" radiusY="160" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
-                    <Arc fill="hotpink" length="90" radiusX="160" radiusY="160" startAngle="180" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                    <Arc fill="green" length="90" radiusX="160" radiusY="160" startAngle="270" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                    <Arc fill="royalblue" length="90" radiusX="160" radiusY="160" startAngle="90" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
+                    <Arc fill="gold" length="90" radiusX="160" radiusY="160" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
+                    <Arc fill="darkkhaki" length="90" radiusX="160" radiusY="160" startAngle="180" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                    <Arc fill="forestgreen" length="90" radiusX="160" radiusY="160" startAngle="270" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
                 </Group>
                 <Group fx:id="middleCircle" rotate="-90" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                    <Arc fill="hotpink" length="90" radiusX="140" radiusY="140" startAngle="90" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
-                    <Arc fill="green" length="90" radiusX="140" radiusY="140" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
-                    <Arc fill="blue" length="90" radiusX="140" radiusY="140" startAngle="180" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                    <Arc fill="chartreuse" length="90" radiusX="140" radiusY="140" startAngle="270" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                    <Arc fill="darkkhaki" length="90" radiusX="140" radiusY="140" startAngle="90" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
+                    <Arc fill="forestgreen" length="90" radiusX="140" radiusY="140" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
+                    <Arc fill="royalblue" length="90" radiusX="140" radiusY="140" startAngle="180" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                    <Arc fill="gold" length="90" radiusX="140" radiusY="140" startAngle="270" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
                 </Group>
                 <Group fx:id="innerCircle" rotate="-90" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                    <Arc fill="blue" length="90" radiusX="120" radiusY="120" startAngle="90" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
-                    <Arc fill="chartreuse" length="90" radiusX="120" radiusY="120" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
-                    <Arc fill="hotpink" length="90" radiusX="120" radiusY="120" startAngle="180" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                    <Arc fill="green" length="90" radiusX="120" radiusY="120" startAngle="270" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                    <Arc fill="royalblue" length="90" radiusX="120" radiusY="120" startAngle="90" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
+                    <Arc fill="gold" length="90" radiusX="120" radiusY="120" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
+                    <Arc fill="darkkhaki" length="90" radiusX="120" radiusY="120" startAngle="180" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                    <Arc fill="forestgreen" length="90" radiusX="120" radiusY="120" startAngle="270" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
                 </Group>
                 <Group GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                     <Arc fx:id="startButton" length="90" onMouseEntered="#mouseEnter" onMouseExited="#mouseExit" radiusX="100" radiusY="100" startAngle="90" stroke="#1c1c1c" strokeWidth="5" type="ROUND" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" onMouseClicked="#onClick"/>

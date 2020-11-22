@@ -1,14 +1,15 @@
 package Code;
 
-import javafx.scene.paint.Color;
+import javafx.fxml.FXML;
+import javafx.scene.Node;
 
 public class CrossObstacle extends Obstacle{
+    @FXML private Node crossObstacle;
     private double radius;
-    private double rotateSpeed;
+    private double rotateSpeed = 0.1;
 
-    //TODO: Triangle Obstacle Constructor [assign radius and speed based on difficulty (both 0-1)]
-    CrossObstacle(double difficulty, Color[] colors, Color passingColor) {
-        super(difficulty, colors, passingColor);
+    @FXML private void initialize() {
+        doMovement();
     }
     //TODO: Check For Collision
     @Override
@@ -18,5 +19,18 @@ public class CrossObstacle extends Obstacle{
     //TODO: Implement Rotation
     @Override
     void doMovement() {
+        Thread animationThread = new Thread(() ->
+        {
+            int updateInTime = 20; // Millisecond
+            while (true) {
+                try {
+                    crossObstacle.setRotate(crossObstacle.getRotate()+rotateSpeed*updateInTime);
+                    Thread.sleep(updateInTime);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        animationThread.start();
     }
 }

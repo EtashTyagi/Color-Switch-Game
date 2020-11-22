@@ -1,15 +1,17 @@
 package Code;
 
-import javafx.scene.paint.Color;
+import javafx.fxml.FXML;
+import javafx.scene.Group;
 
-//TODO: Design Sprite
 public class ConcentricTripleCircleObstacle extends Obstacle {
+    @FXML private Group outerCircle;
+    @FXML private Group middleCircle;
+    @FXML private Group innerCircle;
     private double radius;
-    private double rotateSpeed;
+    private double rotateSpeed = 0.1;
 
-    //TODO: Triangle Obstacle Constructor [assign radius and speed based on difficulty (both 0-1)]
-    ConcentricTripleCircleObstacle(double difficulty, Color[] colors, Color passingColor) {
-        super(difficulty, colors, passingColor);
+    @FXML private void initialize() {
+        doMovement();
     }
     //TODO: Check For Collision
     @Override
@@ -19,5 +21,20 @@ public class ConcentricTripleCircleObstacle extends Obstacle {
     //TODO: Implement Rotation
     @Override
     void doMovement() {
+        Thread animationThread = new Thread(() ->
+        {
+            int updateInTime = 20; // Millisecond
+            while (true) {
+                try {
+                    outerCircle.setRotate(outerCircle.getRotate()+rotateSpeed*updateInTime);
+                    middleCircle.setRotate(middleCircle.getRotate()-rotateSpeed*updateInTime);
+                    innerCircle.setRotate(innerCircle.getRotate()+rotateSpeed*updateInTime);
+                    Thread.sleep(updateInTime);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        animationThread.start();
     }
 }

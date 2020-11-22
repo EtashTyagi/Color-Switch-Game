@@ -8,11 +8,6 @@ public abstract class Obstacle implements Collidable {
     private Color[] colors;
     private Color passingColor;
 
-    Obstacle(double difficulty, Color[] colors, Color passingColor) {
-        this.difficulty = difficulty;
-        this.colors = colors.clone();
-        this.passingColor = passingColor;
-    }
     abstract void doMovement();
     public Color[] getColors() {
         return colors;

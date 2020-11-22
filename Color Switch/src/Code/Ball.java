@@ -1,19 +1,23 @@
 package Code;
 
+import javafx.fxml.FXML;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 
-//TODO: Design Sprite
+import java.util.Collections;
+import java.util.Random;
+
 public class Ball {
+    @FXML public Circle ball;
     private double velocity;
-    private Color color;
-    private double radius;
     private double xCoord;
     private double yCoord;
-    //TODO: Ball Constructor
-    public Ball(double radius, double[] startCoordinates, Color color) {
+    public void initialize() {
+        Random random = new Random();
+        ball.setFill(Main.gameColors[random.nextInt(Main.gameColors.length)]);
     }
     public Color getColor(){
-        return color;
+        return (Color) ball.getFill();
     }
     public double getVelocity() {
         return velocity;
@@ -22,10 +26,18 @@ public class Ball {
         return new double[]{xCoord, yCoord};
     }
     public double getRadius() {
-        return radius;
+        return ball.getRadius();
     }
     public void setColor(Color color) {
-        this.color = color;
+        boolean validColor = false;
+        for (int index = 0 ; index < Main.gameColors.length ; index++) {
+            validColor = validColor || (Main.gameColors[index] == color);
+        }
+        if (validColor) {
+            ball.setFill(color);
+        } else {
+            // Throw Error Here
+        }
     }
     public void setVelocity(int velocity) {
         this.velocity = velocity;

@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -13,6 +14,7 @@ import java.io.IOException;
 public class Main extends Application {
     final public static int STAGE_WIDTH = 500;
     final public static int STAGE_HEIGHT = 700;
+    final public static Color[] gameColors = new Color[]{Color.ROYALBLUE, Color.GOLD, Color.DARKKHAKI, Color.FORESTGREEN};
     @Override
     public void start(Stage primaryStage) throws Exception{
         openMainMenu(primaryStage);

@@ -1,23 +1,39 @@
 package Code;
 
+import javafx.fxml.FXML;
+import javafx.scene.Group;
 import javafx.scene.paint.Color;
 
 public class AdjacentDoubleCircleObstacle extends Obstacle{
-    private double radius1;
-    private double radius2;
-    private double rotateSpeed;
+    @FXML private Group firstCircle;
+    @FXML private Group secondCircle;
+    private double radius1; //TODO: Set
+    private double radius2; //TODO: Set
+    private double rotateSpeed = 0.1;
 
-    //TODO: Triangle Obstacle Constructor [assign radius1 & radius2 and speed(same for both) based on difficulty (both 0-1)]
-    AdjacentDoubleCircleObstacle(double difficulty, Color[] colors, Color passingColor) {
-        super(difficulty, colors, passingColor);
+    @FXML private void initialize() {
+        doMovement();
     }
     //TODO: Check For Collision
     @Override
     public boolean hasCollidedWithBall(Ball ball) {
         return false;
     }
-    //TODO: Implement Rotation
     @Override
     void doMovement() {
+        Thread animationThread = new Thread(() ->
+        {
+            int updateInTime = 20; // Millisecond
+            while (true) {
+                try {
+                    firstCircle.setRotate(firstCircle.getRotate()+rotateSpeed*updateInTime);
+                    secondCircle.setRotate(secondCircle.getRotate()-rotateSpeed*updateInTime);
+                    Thread.sleep(updateInTime);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        animationThread.start();
     }
 }

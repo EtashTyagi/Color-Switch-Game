@@ -14,7 +14,6 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.util.Random;
 
@@ -27,16 +26,16 @@ public class MainMenu {
     @FXML private Group outerCircle;
     @FXML private Group middleCircle;
     @FXML private Group innerCircle;
-    @FXML private ImagePattern startUnEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\StartUE.png"));
-    @FXML private ImagePattern startEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\StartE.png"));
-    @FXML private ImagePattern highScoreUnEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\HighScoreUE.png"));
-    @FXML private ImagePattern highScoreEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\HighScoreE.png"));
-    @FXML private ImagePattern settingsUnEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\SettingsUE.png"));
-    @FXML private ImagePattern settingsEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\SettingsE.png"));
-    @FXML private ImagePattern exitUnEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\ExitUE.png"));
-    @FXML private ImagePattern exitEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\ExitE.png"));
-    @FXML private ImagePattern backUnEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\backUE.png"));
-    @FXML private ImagePattern backEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\backE.png"));
+    @FXML private final ImagePattern startUnEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\StartUE.png"));
+    @FXML private final ImagePattern startEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\StartE.png"));
+    @FXML private final ImagePattern highScoreUnEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\HighScoreUE.png"));
+    @FXML private final ImagePattern highScoreEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\HighScoreE.png"));
+    @FXML private final ImagePattern settingsUnEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\SettingsUE.png"));
+    @FXML private final ImagePattern settingsEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\SettingsE.png"));
+    @FXML private final ImagePattern exitUnEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\ExitUE.png"));
+    @FXML private final ImagePattern exitEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\ExitE.png"));
+    @FXML private final ImagePattern backUnEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\backUE.png"));
+    @FXML private final ImagePattern backEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\backE.png"));
     @FXML private Scene highScoreScene;
     @FXML private Scene settingsScene;
     Thread animationThread;
@@ -56,7 +55,7 @@ public class MainMenu {
         {   int changeTitleInTime = 1000; // Millisecond
             int updateInTime = 20; // Millisecond
             double[] randomRGB = new double[3];
-            double[] curRGB = new double[3];
+            double[] curRGB = new double[]{255, 255, 255};
             Random random = new Random();
             int timeTillChangeTitle = 0;
             double rotateSpeed = 0.1; // Degree Per Mili Sec
@@ -84,12 +83,11 @@ public class MainMenu {
         });
         animationThread.start();
     }
-    @FXML private void onClick(MouseEvent e) {
+    @FXML private void onClick(MouseEvent e) throws IOException {
         if (e.getButton()== MouseButton.PRIMARY) {
             Arc source = ((Arc) e.getSource());
             if (source == startButton) {
-                Parent endlessGame = new EndlessGame(10);
-                mainStage.setScene(new Scene(endlessGame, Main.STAGE_WIDTH, Main.STAGE_HEIGHT));
+                spriteTester();
             } else if (source == highScoreButton) {
                 highScoreMenu();
             } else if (source == settingsButton) {
@@ -97,6 +95,7 @@ public class MainMenu {
             } else if (source == exitButton) {
                 animationThread.stop();
                 mainStage.close();
+                System.exit(0);
             }
         }
     }
@@ -131,7 +130,7 @@ public class MainMenu {
         {   int changeTitleInTime = 1000; // Millisecond
             int updateInTime = 20; // Millisecond
             double[] randomRGB = new double[3];
-            double[] curRGB = new double[3];
+            double[] curRGB = new double[]{255, 255, 255};
             Random random = new Random();
             Label settingsLabel = ((Label) (settingsScene.lookup("#settingsLabel")));
             int timeTillChangeTitle = 0;
@@ -168,7 +167,7 @@ public class MainMenu {
         {   int changeTitleInTime = 1000; // Millisecond
             int updateInTime = 20; // Millisecond
             double[] randomRGB = new double[3];
-            double[] curRGB = new double[3];
+            double[] curRGB = new double[]{255, 255, 255};
             Random random = new Random();
             Label highScoreLabel = ((Label) (highScoreScene.lookup("#highScoreLabel")));
             int timeTillChangeTitle = 0;
@@ -197,6 +196,16 @@ public class MainMenu {
         backButton.setOnMouseEntered((e) -> backButton.setFill(backEnteredSprite));
         backButton.setOnMouseExited((e) -> backButton.setFill(backUnEnteredSprite));
         backButton.setOnMouseClicked((e) -> {mainStage.setScene(mainScene) ; highScoreAnimationThread.stop();});
+    }
+    // For Debug TODO: REMOVE
+    @FXML private void spriteTester() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("SpriteTester.fxml"));
+        Parent guiTest = loader.load();
+        SpriteTester spriteTester = loader.getController();
+        spriteTester.setMainStage(mainStage);
+        spriteTester.setMainMenuScene(mainStage.getScene());
+        mainStage.setScene(new Scene(guiTest, Main.STAGE_WIDTH, Main.STAGE_HEIGHT));
+
     }
     //TODO: Load High Score Function
     private void loadHighScoreData() {
