@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.shape.Arc?>
+<GridPane xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml" fx:controller="Code.Switch">
+    <Group rotate="-90" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+        <Arc fill="royalblue" length="90" radiusX="12.5" radiusY="12.5" startAngle="90" stroke="#1c1c1c" strokeWidth="0" type="ROUND" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
+        <Arc fill="gold" length="90" radiusX="12.5" radiusY="12.5" stroke="#1c1c1c" strokeWidth="0" type="ROUND" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
+        <Arc fill="darkkhaki" length="90" radiusX="12.5" radiusY="12.5" startAngle="180" stroke="#1c1c1c" strokeWidth="0" type="ROUND" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+        <Arc fill="forestgreen" length="90" radiusX="12.5" radiusY="12.5" startAngle="270" stroke="#1c1c1c" strokeWidth="0" type="ROUND" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+    </Group>
+</GridPane>

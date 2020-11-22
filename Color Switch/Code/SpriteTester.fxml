@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.shape.Rectangle?>
+<GridPane xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml" fx:id="spriteTesterGP"
+          fx:controller="Code.SpriteTester" vgap="20" style="-fx-background-color: #1c1c1c;" >
+    <children>
+        <Label fx:id="mainLabel" text=" Game Not Implemented! Select Sprite To Test" GridPane.columnIndex="0" GridPane.rowIndex="0" textFill="gold" GridPane.halignment="CENTER">
+               <font>
+                   <Font name="System Bold" size="20"/>
+               </font>
+        </Label>
+        <ComboBox GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.halignment="CENTER" fx:id="selection">
+        </ComboBox>
+        <Button text="show" onMouseClicked="#onShow" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.halignment="CENTER"/>
+        <Button text="back" onMouseClicked="#onBack" GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.halignment="CENTER"/>
+        <Rectangle visible="false" GridPane.columnIndex="0" GridPane.rowIndex="4" width="500"/>
+    </children>
+</GridPane>
