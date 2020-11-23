@@ -1,5 +1,6 @@
 package Code;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 
@@ -23,8 +24,8 @@ public class CrossObstacle extends Obstacle{
         {
             int updateInTime = 20; // Millisecond
             while (true) {
+                Platform.runLater(() -> crossObstacle.setRotate(crossObstacle.getRotate()+rotateSpeed*updateInTime));
                 try {
-                    crossObstacle.setRotate(crossObstacle.getRotate()+rotateSpeed*updateInTime);
                     Thread.sleep(updateInTime);
                 } catch (InterruptedException e) {
                     e.printStackTrace();

@@ -1,5 +1,6 @@
 package Code;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
@@ -24,8 +25,8 @@ public class SquareObstacle extends Obstacle{
         {
             int updateInTime = 20; // Millisecond
             while (true) {
+                Platform.runLater(() -> square.setRotate(square.getRotate()+rotateSpeed*updateInTime));
                 try {
-                    square.setRotate(square.getRotate()+rotateSpeed*updateInTime);
                     Thread.sleep(updateInTime);
                 } catch (InterruptedException e) {
                     e.printStackTrace();

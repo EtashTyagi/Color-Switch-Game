@@ -1,5 +1,6 @@
 package Code;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 
@@ -22,8 +23,8 @@ public class SingleCircleObstacle extends Obstacle{
         {
             int updateInTime = 20; // Millisecond
             while (true) {
+                Platform.runLater(() -> circle.setRotate(circle.getRotate()+rotateSpeed*updateInTime));
                 try {
-                    circle.setRotate(circle.getRotate()+rotateSpeed*updateInTime);
                     Thread.sleep(updateInTime);
                 } catch (InterruptedException e) {
                     e.printStackTrace();

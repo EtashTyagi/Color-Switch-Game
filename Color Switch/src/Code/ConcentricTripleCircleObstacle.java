@@ -1,5 +1,6 @@
 package Code;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 
@@ -25,10 +26,14 @@ public class ConcentricTripleCircleObstacle extends Obstacle {
         {
             int updateInTime = 20; // Millisecond
             while (true) {
-                try {
+                Platform.runLater(() ->
+                {
                     outerCircle.setRotate(outerCircle.getRotate()+rotateSpeed*updateInTime);
                     middleCircle.setRotate(middleCircle.getRotate()-rotateSpeed*updateInTime);
                     innerCircle.setRotate(innerCircle.getRotate()+rotateSpeed*updateInTime);
+                });
+                try {
+
                     Thread.sleep(updateInTime);
                 } catch (InterruptedException e) {
                     e.printStackTrace();

@@ -1,5 +1,6 @@
 package Code;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
@@ -24,8 +25,8 @@ public class TriangleObstacle extends Obstacle{
         {
             int updateInTime = 20; // Millisecond
             while (true) {
+                Platform.runLater(() -> triangle.setRotate(triangle.getRotate()+rotateSpeed*updateInTime));
                 try {
-                    triangle.setRotate(triangle.getRotate()+rotateSpeed*updateInTime);
                     Thread.sleep(updateInTime);
                 } catch (InterruptedException e) {
                     e.printStackTrace();

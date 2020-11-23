@@ -1,5 +1,6 @@
 package Code;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -13,6 +14,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class SpriteTester {
@@ -35,20 +37,23 @@ public class SpriteTester {
             double[] randomRGB = new double[3];
             double[] curRGB = new double[]{255, 255, 255};
             Random random = new Random();
-            int timeTillChangeTitle = 0;
+            AtomicInteger timeTillChangeTitle = new AtomicInteger();
             while (true) {
-                try {
-                    if (timeTillChangeTitle <= 0) {
-                        timeTillChangeTitle = changeTitleInTime;
+                Platform.runLater(() ->
+                {
+                    if (timeTillChangeTitle.get() <= 0) {
+                        timeTillChangeTitle.set(changeTitleInTime);
                         randomRGB[0] = random.nextInt(225)+30;
                         randomRGB[1] = random.nextInt(225)+30;
                         randomRGB[2] = random.nextInt(225)+30;
                     }
-                    curRGB[0] += ((randomRGB[0]-curRGB[0])/timeTillChangeTitle)*updateInTime;
-                    curRGB[1] += ((randomRGB[1]-curRGB[1])/timeTillChangeTitle)*updateInTime;
-                    curRGB[2] += ((randomRGB[2]-curRGB[2])/timeTillChangeTitle)*updateInTime;
+                    curRGB[0] += ((randomRGB[0]-curRGB[0])/ timeTillChangeTitle.get())*updateInTime;
+                    curRGB[1] += ((randomRGB[1]-curRGB[1])/ timeTillChangeTitle.get())*updateInTime;
+                    curRGB[2] += ((randomRGB[2]-curRGB[2])/ timeTillChangeTitle.get())*updateInTime;
                     mainLabel.setTextFill(Color.rgb((int)curRGB[0], (int)curRGB[1], (int) curRGB[2]));
-                    timeTillChangeTitle -= updateInTime;
+                    timeTillChangeTitle.addAndGet(-updateInTime);
+                });
+                try {
                     Thread.sleep(updateInTime);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
