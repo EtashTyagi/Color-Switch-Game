@@ -13,16 +13,16 @@
     <children>
         <GridPane>
         <Group GridPane.rowIndex="0" GridPane.columnIndex="0">
-            <Rectangle height="20" width="125" fill="gold"  rotate="45"/>
+            <Rectangle height="20" width="125" fx:id="firstRectangle" rotate="45"/>
         </Group>
         <Group GridPane.rowIndex="1" GridPane.columnIndex="0">
-            <Rectangle height="20" width="125" fill="royalblue" GridPane.rowIndex="1" GridPane.columnIndex="0" rotate="135"/>
+            <Rectangle height="20" width="125" fx:id="secondRectangle" GridPane.rowIndex="1" GridPane.columnIndex="0" rotate="135"/>
         </Group>
         <Group GridPane.rowIndex="1" GridPane.columnIndex="1">
-            <Rectangle height="20" width="125" fill="darkkhaki" GridPane.rowIndex="1" GridPane.columnIndex="1" rotate="225"/>
+            <Rectangle height="20" width="125" fx:id="thirdRectangle" GridPane.rowIndex="1" GridPane.columnIndex="1" rotate="225"/>
         </Group>
         <Group GridPane.rowIndex="0" GridPane.columnIndex="1">
-            <Rectangle height="20" width="125" fill="forestgreen" GridPane.rowIndex="0" GridPane.columnIndex="1" rotate="315"/>
+            <Rectangle height="20" width="125" fx:id="fourthRectangle" GridPane.rowIndex="0" GridPane.columnIndex="1" rotate="315"/>
         </Group>
         </GridPane>
     </children>

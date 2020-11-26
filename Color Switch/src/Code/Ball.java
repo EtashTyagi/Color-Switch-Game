@@ -4,7 +4,6 @@ import javafx.fxml.FXML;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-import java.util.Collections;
 import java.util.Random;
 
 public class Ball {
@@ -14,7 +13,7 @@ public class Ball {
     private double yCoord;
     public void initialize() {
         Random random = new Random();
-        ball.setFill(Main.gameColors[random.nextInt(Main.gameColors.length)]);
+        ball.setFill(Main.GAME_COLORS[random.nextInt(Main.GAME_COLORS.length)]);
     }
     public Color getColor(){
         return (Color) ball.getFill();
@@ -30,8 +29,8 @@ public class Ball {
     }
     public void setColor(Color color) {
         boolean validColor = false;
-        for (int index = 0 ; index < Main.gameColors.length ; index++) {
-            validColor = validColor || (Main.gameColors[index] == color);
+        for (int index = 0; index < Main.GAME_COLORS.length ; index++) {
+            validColor = validColor || (Main.GAME_COLORS[index] == color);
         }
         if (validColor) {
             ball.setFill(color);

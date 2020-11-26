@@ -33,7 +33,6 @@ public class SpriteTester {
         selection.getSelectionModel().selectFirst();
         animationThread = new Thread(() ->
         {   int changeTitleInTime = 1000; // Millisecond
-            int updateInTime = 20; // Millisecond
             double[] randomRGB = new double[3];
             double[] curRGB = new double[]{255, 255, 255};
             Random random = new Random();
@@ -47,14 +46,14 @@ public class SpriteTester {
                         randomRGB[1] = random.nextInt(225)+30;
                         randomRGB[2] = random.nextInt(225)+30;
                     }
-                    curRGB[0] += ((randomRGB[0]-curRGB[0])/ timeTillChangeTitle.get())*updateInTime;
-                    curRGB[1] += ((randomRGB[1]-curRGB[1])/ timeTillChangeTitle.get())*updateInTime;
-                    curRGB[2] += ((randomRGB[2]-curRGB[2])/ timeTillChangeTitle.get())*updateInTime;
+                    curRGB[0] += ((randomRGB[0]-curRGB[0])/ timeTillChangeTitle.get())*Main.UPDATE_IN;
+                    curRGB[1] += ((randomRGB[1]-curRGB[1])/ timeTillChangeTitle.get())*Main.UPDATE_IN;
+                    curRGB[2] += ((randomRGB[2]-curRGB[2])/ timeTillChangeTitle.get())*Main.UPDATE_IN;
                     mainLabel.setTextFill(Color.rgb((int)curRGB[0], (int)curRGB[1], (int) curRGB[2]));
-                    timeTillChangeTitle.addAndGet(-updateInTime);
+                    timeTillChangeTitle.addAndGet(-Main.UPDATE_IN);
                 });
                 try {
-                    Thread.sleep(updateInTime);
+                    Thread.sleep(Main.UPDATE_IN);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

@@ -11,11 +11,24 @@ public class LinesObstacles extends Obstacle{
     @FXML private Rectangle third;
     @FXML private Rectangle fourth;
     @FXML private Rectangle fifth;
+    private double thickness = 20;
     private final double defaultLength = 125;
     private double speed = 2.5;
 
     @FXML private void initialize() {
+        Platform.runLater(() ->
+        {
+            first.setFill(Main.GAME_COLORS[0]);
+            second.setFill(Main.GAME_COLORS[1]);
+            third.setFill(Main.GAME_COLORS[2]);
+            fourth.setFill(Main.GAME_COLORS[3]);
+            fifth.setFill(Main.GAME_COLORS[0]);
+        });
         doMovement();
+    }
+    //TODO: assign speed and difficulty based on this
+    public void setDifficulty(double difficulty) {
+
     }
     //TODO: Check For Collision
     @Override

@@ -7,14 +7,14 @@ import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
 import java.io.IOException;
 
 // DONE MAIN
 public class Main extends Application {
     final public static int STAGE_WIDTH = 500;
     final public static int STAGE_HEIGHT = 700;
-    final public static Color[] gameColors = new Color[]{Color.ROYALBLUE, Color.GOLD, Color.DARKKHAKI, Color.FORESTGREEN};
+    final public static Color[] GAME_COLORS = new Color[]{Color.ROYALBLUE, Color.GOLD, Color.DARKKHAKI, Color.FORESTGREEN};
+    final public static int UPDATE_IN = 20; // Milliseconds
     @Override
     public void start(Stage primaryStage) throws Exception{
         openMainMenu(primaryStage);
@@ -29,6 +29,18 @@ public class Main extends Application {
         controller.setMainStage(primaryStage);
         primaryStage.initStyle(StageStyle.UNDECORATED); //REMOVE TITLE BAR
         primaryStage.setTitle("Colour Switch");
+        /*
+        AtomicReference<Double> xOffset = new AtomicReference<>((double) 0);
+        AtomicReference<Double> yOffset = new AtomicReference<>((double) 0);
+        mainMenu.setOnMousePressed(event -> {
+            xOffset.set(event.getSceneX());
+            yOffset.set(event.getSceneY());
+        });
+        mainMenu.setOnMouseDragged(event -> {
+            primaryStage.setX(event.getScreenX() - xOffset.get());
+            primaryStage.setY(event.getScreenY() - yOffset.get());
+        });
+         */ // Remove comment to make dragable, implement everywhere
         primaryStage.setScene(new Scene(mainMenu, STAGE_WIDTH, STAGE_HEIGHT));
         primaryStage.setResizable(false);
         primaryStage.show();

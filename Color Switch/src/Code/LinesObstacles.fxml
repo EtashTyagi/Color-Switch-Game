@@ -4,9 +4,9 @@
 
 <?import javafx.scene.shape.Rectangle?>
 <HBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="Code.LinesObstacles" spacing="-0.5">
-    <Rectangle fill="gold" width="125" height="20" fx:id="first"/>
-    <Rectangle fill="royalblue" width="125" height="20" strokeWidth="0" fx:id="second"/>
-    <Rectangle fill="forestgreen" width="125" height="20" strokeWidth="0" fx:id="third"/>
-    <Rectangle fill="darkkhaki" width="125" height="20" strokeWidth="0" fx:id="fourth"/>
-    <Rectangle fill="gold" height="20" strokeWidth="0" fx:id="fifth"/>
+    <Rectangle width="125" height="20" fx:id="first"/>
+    <Rectangle width="125" height="20" strokeWidth="0" fx:id="second"/>
+    <Rectangle width="125" height="20" strokeWidth="0" fx:id="third"/>
+    <Rectangle width="125" height="20" strokeWidth="0" fx:id="fourth"/>
+    <Rectangle height="20" strokeWidth="0" fx:id="fifth"/>
 </HBox>
