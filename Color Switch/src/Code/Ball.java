@@ -7,25 +7,21 @@ import javafx.scene.shape.Circle;
 import java.util.Random;
 
 public class Ball {
-    @FXML public Circle ball;
+    @FXML private Circle ball;
+    private double radius = 10;
     private double velocity;
-    private double xCoord;
-    private double yCoord;
     public void initialize() {
         Random random = new Random();
         ball.setFill(Main.GAME_COLORS[random.nextInt(Main.GAME_COLORS.length)]);
     }
-    public Color getColor(){
-        return (Color) ball.getFill();
+    public double getCenterY() {
+        return ball.getTranslateY() + radius;
     }
-    public double getVelocity() {
-        return velocity;
-    }
-    public double[] getCoordinates() {
-        return new double[]{xCoord, yCoord};
+    public double getCenterX() {
+        return ball.getTranslateX() + radius;
     }
     public double getRadius() {
-        return ball.getRadius();
+        return radius;
     }
     public void setColor(Color color) {
         boolean validColor = false;
@@ -37,6 +33,9 @@ public class Ball {
         } else {
             // Throw Error Here
         }
+    }
+    public Color getColor() {
+        return (Color) ball.getFill();
     }
     public void setVelocity(int velocity) {
         this.velocity = velocity;

@@ -3,65 +3,54 @@ package Code;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
+import javafx.scene.layout.HBox;
 import javafx.scene.shape.Arc;
+
+import java.util.ArrayList;
 
 public class AdjacentDoubleCircleObstacle extends Obstacle{
     @FXML private Group firstCircle;
     @FXML private Group secondCircle;
-    @FXML private Arc firstCircleFirstPart;
-    @FXML private Arc firstCircleSecondPart;
-    @FXML private Arc firstCircleThirdPart;
-    @FXML private Arc firstCircleFourthPart;
-    @FXML private Arc secondCircleFirstPart;
-    @FXML private Arc secondCircleSecondPart;
-    @FXML private Arc secondCircleThirdPart;
-    @FXML private Arc secondCircleFourthPart;
+    @FXML private ArrayList<Arc> firstArcs;
+    @FXML private ArrayList<Arc> secondArcs;
+    @FXML private HBox mainPane;
+    private double firstCircleRotOffset;
     private final double thickness = 10;
     private double radius1 = 83; //TODO: Set This Is Inner Radius
     private double radius2 = 63; //TODO: Set
-    private double rotateSpeed = 0.1;
+    private double rotateSpeed = 0.05;
 
     @FXML private void initialize() {
+        firstCircleRotOffset = firstCircle.getRotate();
         Platform.runLater(() ->
         {
-            firstCircleFirstPart.setFill(Main.GAME_COLORS[0]);
-            firstCircleSecondPart.setFill(Main.GAME_COLORS[1]);
-            firstCircleThirdPart.setFill(Main.GAME_COLORS[2]);
-            firstCircleFourthPart.setFill(Main.GAME_COLORS[3]);
-            secondCircleFirstPart.setFill(Main.GAME_COLORS[0]);
-            secondCircleSecondPart.setFill(Main.GAME_COLORS[1]);
-            secondCircleThirdPart.setFill(Main.GAME_COLORS[2]);
-            secondCircleFourthPart.setFill(Main.GAME_COLORS[3]);
+            for (int index = 0; index < 4; index++) {
+                firstArcs.get(index).setFill(Main.GAME_COLORS[index]);
+            }
+            // SECOND ARCS FLIPPED OVER VERTICAL AXIS
+            secondArcs.get(0).setFill(Main.GAME_COLORS[1]);
+            secondArcs.get(1).setFill(Main.GAME_COLORS[0]);
+            secondArcs.get(2).setFill(Main.GAME_COLORS[3]);
+            secondArcs.get(3).setFill(Main.GAME_COLORS[2]);
         });
-        doMovement();
     }
     //TODO: assign speed and difficulty based on this
     public void setDifficulty(double difficulty) {
-
     }
-    //TODO: Check For Collision
     @Override
     public boolean hasCollidedWithBall(Ball ball) {
-        return false;
+        return CollisionDetector.ballAndArcedCircle(firstArcs, ball, thickness,
+                mainPane.getTranslateX() + radius1 + thickness, mainPane.getTranslateY() + radius1 + thickness,
+                firstCircle.getRotate()) || CollisionDetector.ballAndArcedCircle(secondArcs, ball, thickness,
+                mainPane.getTranslateX() + 2*(radius1 + thickness + 2) + radius2 + thickness,
+                mainPane.getTranslateY() + radius1 + thickness, secondCircle.getRotate());
     }
     @Override
     void doMovement() {
-        Thread animationThread = new Thread(() ->
+        Platform.runLater(() ->
         {
-            while (true) {
-                Platform.runLater(() ->
-                {
-                    firstCircle.setRotate(firstCircle.getRotate()+rotateSpeed*Main.UPDATE_IN);
-                    secondCircle.setRotate(secondCircle.getRotate()-rotateSpeed*Main.UPDATE_IN);
-                });
-                try {
-
-                    Thread.sleep(Main.UPDATE_IN);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
+            firstCircle.setRotate(firstCircle.getRotate()+rotateSpeed*Main.UPDATE_IN);
+            secondCircle.setRotate(secondCircle.getRotate()-rotateSpeed*Main.UPDATE_IN);
         });
-        animationThread.start();
     }
 }

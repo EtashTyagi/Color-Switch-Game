@@ -3,51 +3,38 @@ package Code;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
+import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Arc;
-import javafx.scene.shape.Rectangle;
 
-public class SingleCircleObstacle extends Obstacle{
+import java.util.ArrayList;
+
+public class SingleCircleObstacle extends Obstacle {
     @FXML private Group circle;
-    @FXML private Arc first;
-    @FXML private Arc second;
-    @FXML private Arc third;
-    @FXML private Arc fourth;
+    @FXML private ArrayList<Arc> arcs;
+    @FXML private GridPane mainPane;
     private double thickness = 15;
-    private double radius = 83;
-    private double rotateSpeed = 0.1;
+    private double radius = 83; //INNER
+    private double rotateSpeed = 0.05;
 
     @FXML public void initialize() {
         Platform.runLater(() ->
         {
-            first.setFill(Main.GAME_COLORS[0]);
-            second.setFill(Main.GAME_COLORS[1]);
-            third.setFill(Main.GAME_COLORS[2]);
-            fourth.setFill(Main.GAME_COLORS[3]);
+            for (int index = 0; index < arcs.size(); index++) {
+                arcs.get(index).setFill(Main.GAME_COLORS[index]);
+            }
         });
-        doMovement();
     }
     //TODO: assign speed and difficulty based on this
     public void setDifficulty(double difficulty) {
 
     }
-    //TODO: Check For Collision
     @Override
     public boolean hasCollidedWithBall(Ball ball) {
-        return false;
+        return CollisionDetector.ballAndArcedCircle(arcs, ball, thickness, mainPane.getTranslateX() + radius + thickness,
+                mainPane.getTranslateY() + radius + thickness, circle.getRotate());
     }
     @Override
     void doMovement() {
-        Thread animationThread = new Thread(() ->
-        {
-            while (true) {
-                Platform.runLater(() -> circle.setRotate(circle.getRotate()+rotateSpeed*Main.UPDATE_IN));
-                try {
-                    Thread.sleep(Main.UPDATE_IN);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        animationThread.start();
+        Platform.runLater(() -> circle.setRotate(circle.getRotate()+rotateSpeed*Main.UPDATE_IN));
     }
 }

@@ -3,74 +3,63 @@ package Code;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
+import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Arc;
+
+import java.util.ArrayList;
 
 public class ConcentricTripleCircleObstacle extends Obstacle {
     @FXML private Group outerCircle;
     @FXML private Group middleCircle;
     @FXML private Group innerCircle;
-    @FXML private Arc outerCircleFirst;
-    @FXML private Arc outerCircleSecond;
-    @FXML private Arc outerCircleThird;
-    @FXML private Arc outerCircleFourth;
-    @FXML private Arc middleCircleFirst;
-    @FXML private Arc middleCircleSecond;
-    @FXML private Arc middleCircleThird;
-    @FXML private Arc middleCircleFourth;
-    @FXML private Arc innerCircleFirst;
-    @FXML private Arc innerCircleSecond;
-    @FXML private Arc innerCircleThird;
-    @FXML private Arc innerCircleFourth;
+    @FXML private ArrayList<Arc> outerArcs;
+    @FXML private ArrayList<Arc> middleArcs;
+    @FXML private ArrayList<Arc> innerArcs;
+    @FXML private GridPane mainPane;
     private double thickness = 17;
     private double radius = 82;
-    private double rotateSpeed = 0.1;
+    private double rotateSpeed = 0.05;
 
     @FXML private void initialize() {
         Platform.runLater(() ->
         {
-            outerCircleFirst.setFill(Main.GAME_COLORS[0]);
-            outerCircleSecond.setFill(Main.GAME_COLORS[1]);
-            outerCircleThird.setFill(Main.GAME_COLORS[2]);
-            outerCircleFourth.setFill(Main.GAME_COLORS[3]);
-            middleCircleFirst.setFill(Main.GAME_COLORS[0]);
-            middleCircleSecond.setFill(Main.GAME_COLORS[1]);
-            middleCircleThird.setFill(Main.GAME_COLORS[2]);
-            middleCircleFourth.setFill(Main.GAME_COLORS[3]);
-            innerCircleFirst.setFill(Main.GAME_COLORS[0]);
-            innerCircleSecond.setFill(Main.GAME_COLORS[1]);
-            innerCircleThird.setFill(Main.GAME_COLORS[2]);
-            innerCircleFourth.setFill(Main.GAME_COLORS[3]);
+            for (int index = 0; index < outerArcs.size(); index++) {
+                outerArcs.get(index).setFill(Main.GAME_COLORS[index]);
+                innerArcs.get(index).setFill(Main.GAME_COLORS[index]);
+            }
+            middleArcs.get(0).setFill(Main.GAME_COLORS[1]);
+            middleArcs.get(1).setFill(Main.GAME_COLORS[0]);
+            middleArcs.get(2).setFill(Main.GAME_COLORS[3]);
+            middleArcs.get(3).setFill(Main.GAME_COLORS[2]);
         });
-        doMovement();
     }
     //TODO: assign speed and difficulty based on this
     public void setDifficulty(double difficulty) {
 
     }
-    //TODO: Check For Collision
     @Override
     public boolean hasCollidedWithBall(Ball ball) {
-        return false;
+        boolean outer = CollisionDetector.ballAndArcedCircle(outerArcs, ball, thickness,
+                mainPane.getTranslateX() + outerArcs.get(0).getRadiusX() + 1.5,
+                mainPane.getTranslateY() + outerArcs.get(0).getRadiusY() + 1.5,
+                outerCircle.getRotate());
+        boolean middle = CollisionDetector.ballAndArcedCircle(middleArcs, ball, thickness,
+                mainPane.getTranslateX() + outerArcs.get(0).getRadiusX() + 1.5,
+                mainPane.getTranslateY() + outerArcs.get(0).getRadiusY() + 1.5,
+                middleCircle.getRotate());
+        boolean inner = CollisionDetector.ballAndArcedCircle(innerArcs, ball, thickness,
+                mainPane.getTranslateX() + outerArcs.get(0).getRadiusX() + 1.5,
+                mainPane.getTranslateY() + outerArcs.get(0).getRadiusY() + 1.5,
+                innerCircle.getRotate());
+        return outer || middle || inner;
     }
     @Override
     void doMovement() {
-        Thread animationThread = new Thread(() ->
+        Platform.runLater(() ->
         {
-            while (true) {
-                Platform.runLater(() ->
-                {
-                    outerCircle.setRotate(outerCircle.getRotate()+rotateSpeed*Main.UPDATE_IN);
-                    middleCircle.setRotate(middleCircle.getRotate()-rotateSpeed*Main.UPDATE_IN);
-                    innerCircle.setRotate(innerCircle.getRotate()+rotateSpeed*Main.UPDATE_IN);
-                });
-                try {
-
-                    Thread.sleep(Main.UPDATE_IN);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
+            outerCircle.setRotate(outerCircle.getRotate()+rotateSpeed*Main.UPDATE_IN);
+            middleCircle.setRotate(middleCircle.getRotate()-rotateSpeed*Main.UPDATE_IN);
+            innerCircle.setRotate(innerCircle.getRotate()+rotateSpeed*Main.UPDATE_IN);
         });
-        animationThread.start();
     }
 }

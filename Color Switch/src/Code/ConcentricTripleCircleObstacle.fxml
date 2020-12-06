@@ -1,37 +1,88 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
 <?import javafx.scene.shape.Arc?>
-<GridPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="Code.ConcentricTripleCircleObstacle">
+<GridPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="Code.ConcentricTripleCircleObstacle"
+          fx:id="mainPane">
     <children>
-        <Group fx:id="outerCircle" rotate="-90" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-            <Arc fx:id="outerCircleFirst" length="90" radiusX="140" radiusY="140" startAngle="90" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
-            <Arc fx:id="outerCircleSecond" length="90" radiusX="140" radiusY="140" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
-            <Arc fx:id="outerCircleThird" length="90" radiusX="140" radiusY="140" startAngle="180" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-            <Arc fx:id="outerCircleFourth" length="90" radiusX="140" radiusY="140" startAngle="270" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+        <Group fx:id="outerCircle" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+            <Arc fx:id="o1" length="90" radiusX="140" radiusY="140" stroke="#1c1c1c" strokeWidth="3" type="ROUND"
+                 GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0"
+                 GridPane.valignment="CENTER"/>
+            <Arc fx:id="o2" length="90" radiusX="140" radiusY="140" startAngle="90" stroke="#1c1c1c" strokeWidth="3"
+                 type="ROUND" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0"
+                 GridPane.valignment="CENTER"/>
+            <Arc fx:id="o3" length="90" radiusX="140" radiusY="140" startAngle="180" stroke="#1c1c1c"
+                 strokeWidth="3" type="ROUND" GridPane.columnIndex="0" GridPane.halignment="CENTER"
+                 GridPane.rowIndex="1" GridPane.valignment="CENTER"/>
+            <Arc fx:id="o4" length="90" radiusX="140" radiusY="140" startAngle="270" stroke="#1c1c1c"
+                 strokeWidth="3" type="ROUND" GridPane.columnIndex="1" GridPane.halignment="CENTER"
+                 GridPane.rowIndex="1" GridPane.valignment="CENTER"/>
+            <fx:define>
+                <ArrayList fx:id="outerArcs">
+                    <fx:reference source="o1"/>
+                    <fx:reference source="o2"/>
+                    <fx:reference source="o3"/>
+                    <fx:reference source="o4"/>
+                </ArrayList>
+            </fx:define>
         </Group>
-        <Group fx:id="middleCircle" rotate="-90" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-            <Arc fx:id="middleCircleThird" length="90" radiusX="120" radiusY="120" startAngle="90" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
-            <Arc fx:id="middleCircleFourth" length="90" radiusX="120" radiusY="120" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
-            <Arc fx:id="middleCircleFirst" length="90" radiusX="120" radiusY="120" startAngle="180" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-            <Arc fx:id="middleCircleSecond" length="90" radiusX="120" radiusY="120" startAngle="270" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+        <Group fx:id="middleCircle" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+            <Arc fx:id="m1" length="90" radiusX="120" radiusY="120" stroke="#1c1c1c" strokeWidth="3" type="ROUND"
+                 GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0"
+                 GridPane.valignment="CENTER"/>
+            <Arc fx:id="m2" length="90" radiusX="120" radiusY="120" startAngle="90" stroke="#1c1c1c" strokeWidth="3"
+                 type="ROUND" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0"
+                 GridPane.valignment="CENTER"/>
+            <Arc fx:id="m3" length="90" radiusX="120" radiusY="120" startAngle="180" stroke="#1c1c1c"
+                 strokeWidth="3" type="ROUND" GridPane.columnIndex="0" GridPane.halignment="CENTER"
+                 GridPane.rowIndex="1" GridPane.valignment="CENTER"/>
+            <Arc fx:id="m4" length="90" radiusX="120" radiusY="120" startAngle="270" stroke="#1c1c1c"
+                 strokeWidth="3" type="ROUND" GridPane.columnIndex="1" GridPane.halignment="CENTER"
+                 GridPane.rowIndex="1" GridPane.valignment="CENTER"/>
+            <fx:define>
+                <ArrayList fx:id="middleArcs">
+                    <fx:reference source="m1"/>
+                    <fx:reference source="m2"/>
+                    <fx:reference source="m3"/>
+                    <fx:reference source="m4"/>
+                </ArrayList>
+            </fx:define>
         </Group>
-        <Group fx:id="innerCircle" rotate="-90" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-            <Arc fx:id="innerCircleFirst" length="90" radiusX="100" radiusY="100" startAngle="90" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
-            <Arc fx:id="innerCircleSecond" length="90" radiusX="100" radiusY="100" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
-            <Arc fx:id="innerCircleThird" length="90" radiusX="100" radiusY="100" startAngle="180" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-            <Arc fx:id="innerCircleFourth" length="90" radiusX="100" radiusY="100" startAngle="270" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+        <Group fx:id="innerCircle" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+            <Arc fx:id="i1" length="90" radiusX="100" radiusY="100" stroke="#1c1c1c" strokeWidth="3" type="ROUND"
+                 GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0"
+                 GridPane.valignment="CENTER"/>
+            <Arc fx:id="i2" length="90" radiusX="100" radiusY="100" startAngle="90" stroke="#1c1c1c" strokeWidth="3"
+                 type="ROUND" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0"
+                 GridPane.valignment="CENTER"/>
+            <Arc fx:id="i3" length="90" radiusX="100" radiusY="100" startAngle="180" stroke="#1c1c1c"
+                 strokeWidth="3" type="ROUND" GridPane.columnIndex="0" GridPane.halignment="CENTER"
+                 GridPane.rowIndex="1" GridPane.valignment="CENTER"/>
+            <Arc fx:id="i4" length="90" radiusX="100" radiusY="100" startAngle="270" stroke="#1c1c1c"
+                 strokeWidth="3" type="ROUND" GridPane.columnIndex="1" GridPane.halignment="CENTER"
+                 GridPane.rowIndex="1" GridPane.valignment="CENTER"/>
+            <fx:define>
+                <ArrayList fx:id="innerArcs">
+                    <fx:reference source="i1"/>
+                    <fx:reference source="i2"/>
+                    <fx:reference source="i3"/>
+                    <fx:reference source="i4"/>
+                </ArrayList>
+            </fx:define>
         </Group>
         <Group GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-            <Arc length="90" fill="#1c1c1c" radiusX="81" radiusY="81" strokeWidth="2" startAngle="90" stroke="#1c1c1c" type="ROUND" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER"/>
-            <Arc length="90" fill="#1c1c1c" radiusX="81" radiusY="81" strokeWidth="2" stroke="#1c1c1c" type="ROUND" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER"/>
-            <Arc length="90" fill="#1c1c1c" radiusX="81" radiusY="81" strokeWidth="2" startAngle="180" stroke="#1c1c1c" type="ROUND" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER"/>
-            <Arc length="90" fill="#1c1c1c" radiusX="81" radiusY="81" strokeWidth="2" startAngle="270" stroke="#1c1c1c" type="ROUND" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER"/>
+            <Arc length="90" fill="#1c1c1c" radiusX="81" radiusY="81" strokeWidth="2" startAngle="90" stroke="#1c1c1c"
+                 type="ROUND" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER"/>
+            <Arc length="90" fill="#1c1c1c" radiusX="81" radiusY="81" strokeWidth="2" stroke="#1c1c1c" type="ROUND"
+                 GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER"/>
+            <Arc length="90" fill="#1c1c1c" radiusX="81" radiusY="81" strokeWidth="2" startAngle="180" stroke="#1c1c1c"
+                 type="ROUND" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER"/>
+            <Arc length="90" fill="#1c1c1c" radiusX="81" radiusY="81" strokeWidth="2" startAngle="270" stroke="#1c1c1c"
+                 type="ROUND" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER"/>
         </Group>
     </children>
 </GridPane>
