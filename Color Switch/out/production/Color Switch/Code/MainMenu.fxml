@@ -1,48 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
-<GridPane alignment="center" style="-fx-background-color: #1c1c1c;" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Code.MainMenu">
-    <padding><Insets bottom="25" left="25" right="25" top="25" /></padding>
+
+<GridPane alignment="TOP_CENTER" prefHeight="700.0" prefWidth="500.0" style="-fx-background-color: #1c1c1c;" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Code.MainMenu">
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints maxHeight="226.4" minHeight="10.0" prefHeight="103.6" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="515.0" minHeight="10.0" prefHeight="95.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="557.9999847412109" minHeight="10.0" prefHeight="500.20000000000005" vgrow="SOMETIMES" />
+    </rowConstraints>
     <children>
-        <Label text="Color Switch" textFill="white" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" fx:id="mainLabel">
+        <Label fx:id="mainLabel" text="Color Switch" textFill="white" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="BOTTOM">
             <font>
-                <Font name="System Bold" size="48" />
+                <Font name="Comic Sans MS Bold" size="60.0" />
             </font>
         </Label>
-        <Rectangle height="50" visible="false" GridPane.rowIndex="1" />
-        <GridPane GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+        <GridPane prefHeight="324.0" prefWidth="59.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
             <children>
-                <Group fx:id="outerCircle" rotate="-90" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                <Group fx:id="outerCircle" rotate="-90" scaleX="1.25" scaleY="1.25" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                     <Arc fill="royalblue" length="90" radiusX="160" radiusY="160" startAngle="90" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
                     <Arc fill="gold" length="90" radiusX="160" radiusY="160" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
                     <Arc fill="darkkhaki" length="90" radiusX="160" radiusY="160" startAngle="180" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
                     <Arc fill="forestgreen" length="90" radiusX="160" radiusY="160" startAngle="270" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
                 </Group>
-                <Group fx:id="middleCircle" rotate="-90" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                <Group fx:id="middleCircle" rotate="-90" scaleX="1.25" scaleY="1.25" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                     <Arc fill="darkkhaki" length="90" radiusX="140" radiusY="140" startAngle="90" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
                     <Arc fill="forestgreen" length="90" radiusX="140" radiusY="140" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
                     <Arc fill="royalblue" length="90" radiusX="140" radiusY="140" startAngle="180" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
                     <Arc fill="gold" length="90" radiusX="140" radiusY="140" startAngle="270" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
                 </Group>
-                <Group fx:id="innerCircle" rotate="-90" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                <Group fx:id="innerCircle" rotate="-90" scaleX="1.25" scaleY="1.25" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                     <Arc fill="royalblue" length="90" radiusX="120" radiusY="120" startAngle="90" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
                     <Arc fill="gold" length="90" radiusX="120" radiusY="120" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
                     <Arc fill="darkkhaki" length="90" radiusX="120" radiusY="120" startAngle="180" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
                     <Arc fill="forestgreen" length="90" radiusX="120" radiusY="120" startAngle="270" stroke="#1c1c1c" strokeWidth="3" type="ROUND" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
                 </Group>
-                <Group GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                    <Arc fx:id="startButton" length="90" onMouseEntered="#mouseEnter" onMouseExited="#mouseExit" radiusX="100" radiusY="100" startAngle="90" stroke="#1c1c1c" strokeWidth="5" type="ROUND" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" onMouseClicked="#onClick"/>
-                    <Arc fx:id="highScoreButton" length="90" onMouseEntered="#mouseEnter" onMouseExited="#mouseExit" radiusX="100" radiusY="100" stroke="#1c1c1c" strokeWidth="5" type="ROUND" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" onMouseClicked="#onClick"/>
-                    <Arc fx:id="settingsButton" length="90" onMouseEntered="#mouseEnter" onMouseExited="#mouseExit" radiusX="100" radiusY="100" startAngle="180" stroke="#1c1c1c" strokeWidth="5" type="ROUND" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" onMouseClicked="#onClick"/>
-                    <Arc fx:id="exitButton" length="90" onMouseEntered="#mouseEnter" onMouseExited="#mouseExit" radiusX="100" radiusY="100" startAngle="270" stroke="#1c1c1c" strokeWidth="5" type="ROUND" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" onMouseClicked="#onClick"/>
+                <Group scaleX="1.25" scaleY="1.25" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                    <Arc fx:id="startButton" length="90" onMouseClicked="#onClick" onMouseEntered="#mouseEnter" onMouseExited="#mouseExit" radiusX="100" radiusY="100" startAngle="90" stroke="#1c1c1c" strokeWidth="5" type="ROUND" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
+                    <Arc fx:id="highScoreButton" length="90" onMouseClicked="#onClick" onMouseEntered="#mouseEnter" onMouseExited="#mouseExit" radiusX="100" radiusY="100" stroke="#1c1c1c" strokeWidth="5" type="ROUND" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
+                    <Arc fx:id="settingsButton" length="90" onMouseClicked="#onClick" onMouseEntered="#mouseEnter" onMouseExited="#mouseExit" radiusX="100" radiusY="100" startAngle="180" stroke="#1c1c1c" strokeWidth="5" type="ROUND" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                    <Arc fx:id="exitButton" length="90" onMouseClicked="#onClick" onMouseEntered="#mouseEnter" onMouseExited="#mouseExit" radiusX="100" radiusY="100" startAngle="270" stroke="#1c1c1c" strokeWidth="5" type="ROUND" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
                 </Group>
             </children>
+            <columnConstraints>
+                <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints />
+            </rowConstraints>
         </GridPane>
-        <Rectangle height="50" visible="false" GridPane.rowIndex="3" />
     </children>
 </GridPane>

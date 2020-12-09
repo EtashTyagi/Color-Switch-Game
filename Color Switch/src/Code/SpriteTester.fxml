@@ -9,7 +9,7 @@
           xmlns:fx="http://javafx.com/fxml" fx:id="spriteTesterGP"
           fx:controller="Code.SpriteTester" vgap="20" style="-fx-background-color: #1c1c1c;" >
     <children>
-        <Label fx:id="mainLabel" text=" Game Not Implemented! Select Sprite To Test" GridPane.columnIndex="0" GridPane.rowIndex="0" textFill="gold" GridPane.halignment="CENTER">
+        <Label fx:id="mainLabel" text="Select Sprite To Test" GridPane.columnIndex="0" GridPane.rowIndex="0" textFill="gold" GridPane.halignment="CENTER">
                <font>
                    <Font name="System Bold" size="20"/>
                </font>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<GridPane alignment="TOP_CENTER" prefHeight="700.0" prefWidth="500.0" style="-fx-background-color: #1c1c1c;" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Code.EndlessGame">
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints maxHeight="103.6" minHeight="10.0" prefHeight="103.6" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="580.6" minHeight="10.0" prefHeight="580.6" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="557.9999847412109" minHeight="10.0" prefHeight="16.200000000000045" vgrow="SOMETIMES" />
+    </rowConstraints>
+   <children>
+      <Circle fx:id="pauseButton" fill="DODGERBLUE" radius="30.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
+         <GridPane.margin>
+            <Insets right="10.0" />
+         </GridPane.margin></Circle>
+       <Label fx:id="scoreLabel" text="0" textFill="#83bd7f">
+         <font>
+            <Font name="Comic Sans MS" size="70.0" />
+         </font>
+         <padding>
+            <Insets left="10.0" />
+         </padding></Label>
+      <GridPane fx:id="gamePane" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+         </children>
+      </GridPane>
+   </children>
+</GridPane>

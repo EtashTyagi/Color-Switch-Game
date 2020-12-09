@@ -1,29 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
-<?import javafx.scene.shape.Rectangle?>
-<Group xmlns="http://javafx.com/javafx"
+<?import javafx.scene.Group?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.shape.*?>
+<?import java.util.ArrayList?>
+<GridPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
-          fx:controller="Code.CrossObstacle" fx:id="crossObstacle">
-    <children>
-        <GridPane>
-        <Group GridPane.rowIndex="0" GridPane.columnIndex="0">
-            <Rectangle height="20" width="125" fx:id="firstRectangle" rotate="45"/>
-        </Group>
-        <Group GridPane.rowIndex="1" GridPane.columnIndex="0">
-            <Rectangle height="20" width="125" fx:id="secondRectangle" GridPane.rowIndex="1" GridPane.columnIndex="0" rotate="135"/>
-        </Group>
-        <Group GridPane.rowIndex="1" GridPane.columnIndex="1">
-            <Rectangle height="20" width="125" fx:id="thirdRectangle" GridPane.rowIndex="1" GridPane.columnIndex="1" rotate="225"/>
-        </Group>
-        <Group GridPane.rowIndex="0" GridPane.columnIndex="1">
-            <Rectangle height="20" width="125" fx:id="fourthRectangle" GridPane.rowIndex="0" GridPane.columnIndex="1" rotate="315"/>
-        </Group>
-        </GridPane>
-    </children>
-</Group>
+          fx:controller="Code.CrossObstacle" fx:id="mainPane">
+    <Group fx:id="crossObstacle">
+        <Rectangle height="20" width="150" translateX="10" arcWidth="10" arcHeight="10" fx:id="right" fill="#1c1c1c"/>
+        <Rectangle height="150" width="20" translateY="-140" arcWidth="10" arcHeight="10" fx:id="up" fill="#1c1c1c"/>
+        <Rectangle height="20" width="150" translateX="-140" arcWidth="10" arcHeight="10" fx:id="left" fill="#1c1c1c"/>
+        <Rectangle height="150" width="20" translateY="10" arcWidth="10" arcHeight="10" fx:id="down" fill="#1c1c1c"/>
+        <Rectangle height="10" width="20" arcWidth="10" arcHeight="10" translateX="10" translateY="10" fx:id="firstOffset" fill="#1c1c1c"/>
+        <fx:define>
+            <ArrayList fx:id="arms">
+                <fx:reference source="right"/>
+                <fx:reference source="up"/>
+                <fx:reference source="left"/>
+                <fx:reference source="down"/>
+            </ArrayList>
+        </fx:define>
+    </Group>
+</GridPane>

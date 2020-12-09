@@ -16,7 +16,7 @@ import javafx.scene.shape.Arc;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import java.io.IOException;
-import java.util.Random;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class MainMenu {
@@ -28,20 +28,79 @@ public class MainMenu {
     @FXML private Group outerCircle;
     @FXML private Group middleCircle;
     @FXML private Group innerCircle;
-    @FXML private final ImagePattern startUnEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\StartUE.png"));
-    @FXML private final ImagePattern startEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\StartE.png"));
-    @FXML private final ImagePattern highScoreUnEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\HighScoreUE.png"));
-    @FXML private final ImagePattern highScoreEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\HighScoreE.png"));
-    @FXML private final ImagePattern settingsUnEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\SettingsUE.png"));
-    @FXML private final ImagePattern settingsEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\SettingsE.png"));
-    @FXML private final ImagePattern exitUnEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\ExitUE.png"));
-    @FXML private final ImagePattern exitEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\ExitE.png"));
-    @FXML private final ImagePattern backUnEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\backUE.png"));
-    @FXML private final ImagePattern backEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\backE.png"));
-    @FXML private Scene highScoreScene;
-    @FXML private Scene settingsScene;
-    Thread animationThread;
+    private final ImagePattern startUnEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\StartUE.png"));
+    private final ImagePattern startEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\StartE.png"));
+    private final ImagePattern highScoreUnEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\HighScoreUE.png"));
+    private final ImagePattern highScoreEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\HighScoreE.png"));
+    private final ImagePattern settingsUnEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\SettingsUE.png"));
+    private final ImagePattern settingsEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\SettingsE.png"));
+    private final ImagePattern exitUnEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\ExitUE.png"));
+    private final ImagePattern exitEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\ExitE.png"));
+    private final ImagePattern backUnEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\backUE.png"));
+    private final ImagePattern backEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\backE.png"));
+    private ScheduledFuture<?> mainMenuFuture;
+    private Scene highScoreScene;
+    private ScheduledFuture<?> highScoreFuture;
+    private Scene settingsScene;
+    private ScheduledFuture<?> settingsFuture;
     private Stage mainStage;
+    private final int changeTitleInTime = 1000;
+    private final double[] randomRGB = new double[3];
+    private final double[] curRGB = new double[]{255, 255, 255};
+    private final AtomicInteger timeTillChangeTitle = new AtomicInteger();
+    double rotateSpeed = 0.075;
+    private final Runnable mainMenuAnimationTask = () -> {
+        Platform.runLater(() -> {
+            if (timeTillChangeTitle.get() <= 0) {
+                timeTillChangeTitle.set(changeTitleInTime);
+                randomRGB[0] = Main.RANDOM.nextInt(225)+30;
+                randomRGB[1] = Main.RANDOM.nextInt(225)+30;
+                randomRGB[2] = Main.RANDOM.nextInt(225)+30;
+            }
+            outerCircle.setRotate(outerCircle.getRotate()+rotateSpeed*Main.UPDATE_IN);
+            middleCircle.setRotate(middleCircle.getRotate()-rotateSpeed*Main.UPDATE_IN);
+            innerCircle.setRotate(innerCircle.getRotate()+rotateSpeed*Main.UPDATE_IN);
+            curRGB[0] += ((randomRGB[0]-curRGB[0])/ timeTillChangeTitle.get())*Main.UPDATE_IN;
+            curRGB[1] += ((randomRGB[1]-curRGB[1])/ timeTillChangeTitle.get())*Main.UPDATE_IN;
+            curRGB[2] += ((randomRGB[2]-curRGB[2])/ timeTillChangeTitle.get())*Main.UPDATE_IN;
+            mainLabel.setTextFill(Color.rgb((int)curRGB[0], (int)curRGB[1], (int) curRGB[2]));
+            timeTillChangeTitle.addAndGet(-Main.UPDATE_IN);
+        });
+    };
+    private final Runnable settingsMenuAnimationTask = () -> {
+        Label settingsLabel = ((Label) (settingsScene.lookup("#settingsLabel")));
+        Platform.runLater(() ->
+        {
+            if (timeTillChangeTitle.get() <= 0) {
+                timeTillChangeTitle.set(changeTitleInTime);
+                randomRGB[0] = Main.RANDOM.nextInt(225)+30;
+                randomRGB[1] = Main.RANDOM.nextInt(225)+30;
+                randomRGB[2] = Main.RANDOM.nextInt(225)+30;
+            }
+            curRGB[0] += ((randomRGB[0]-curRGB[0])/ timeTillChangeTitle.get())*Main.UPDATE_IN;
+            curRGB[1] += ((randomRGB[1]-curRGB[1])/ timeTillChangeTitle.get())*Main.UPDATE_IN;
+            curRGB[2] += ((randomRGB[2]-curRGB[2])/ timeTillChangeTitle.get())*Main.UPDATE_IN;
+            settingsLabel.setTextFill(Color.rgb((int)curRGB[0], (int)curRGB[1], (int) curRGB[2]));
+            timeTillChangeTitle.addAndGet(-Main.UPDATE_IN);
+        });
+    };
+    private final Runnable highScoreMenuAnimationTask = () -> {
+        Label highScoreLabel = ((Label) (highScoreScene.lookup("#highScoreLabel")));
+        Platform.runLater(() ->
+        {
+            if (timeTillChangeTitle.get() <= 0) {
+                timeTillChangeTitle.set(changeTitleInTime);
+                randomRGB[0] = Main.RANDOM.nextInt(225)+30;
+                randomRGB[1] = Main.RANDOM.nextInt(225)+30;
+                randomRGB[2] = Main.RANDOM.nextInt(225)+30;
+            }
+            curRGB[0] += ((randomRGB[0]-curRGB[0])/ timeTillChangeTitle.get())*Main.UPDATE_IN;
+            curRGB[1] += ((randomRGB[1]-curRGB[1])/ timeTillChangeTitle.get())*Main.UPDATE_IN;
+            curRGB[2] += ((randomRGB[2]-curRGB[2])/ timeTillChangeTitle.get())*Main.UPDATE_IN;
+            highScoreLabel.setTextFill(Color.rgb((int)curRGB[0], (int)curRGB[1], (int) curRGB[2]));
+            timeTillChangeTitle.addAndGet(-Main.UPDATE_IN);
+        });
+    };
 
     public void setMainStage(Stage primaryStage) {
         this.mainStage = primaryStage;
@@ -53,52 +112,19 @@ public class MainMenu {
         exitButton.setFill(exitUnEnteredSprite);
         highScoreScene = new Scene(FXMLLoader.load(getClass().getResource("HighScore.fxml")), Main.STAGE_WIDTH, Main.STAGE_HEIGHT);
         settingsScene = new Scene(FXMLLoader.load(getClass().getResource("Settings.fxml")), Main.STAGE_WIDTH, Main.STAGE_HEIGHT);
-        animationThread = new Thread(() ->
-        {   int changeTitleInTime = 1000; // Millisecond
-            int updateInTime = 20; // Millisecond
-            double[] randomRGB = new double[3];
-            double[] curRGB = new double[]{255, 255, 255};
-            Random random = new Random();
-            AtomicInteger timeTillChangeTitle = new AtomicInteger();
-            double rotateSpeed = 0.1; // Degree Per Mili Sec
-            while (true) {
-                Platform.runLater(() ->
-                {
-                    if (timeTillChangeTitle.get() <= 0) {
-                        timeTillChangeTitle.set(changeTitleInTime);
-                        randomRGB[0] = random.nextInt(225)+30;
-                        randomRGB[1] = random.nextInt(225)+30;
-                        randomRGB[2] = random.nextInt(225)+30;
-                    }
-                    outerCircle.setRotate(outerCircle.getRotate()+rotateSpeed*updateInTime);
-                    middleCircle.setRotate(middleCircle.getRotate()-rotateSpeed*updateInTime);
-                    innerCircle.setRotate(innerCircle.getRotate()+rotateSpeed*updateInTime);
-                    curRGB[0] += ((randomRGB[0]-curRGB[0])/ timeTillChangeTitle.get())*updateInTime;
-                    curRGB[1] += ((randomRGB[1]-curRGB[1])/ timeTillChangeTitle.get())*updateInTime;
-                    curRGB[2] += ((randomRGB[2]-curRGB[2])/ timeTillChangeTitle.get())*updateInTime;
-                    mainLabel.setTextFill(Color.rgb((int)curRGB[0], (int)curRGB[1], (int) curRGB[2]));
-                    timeTillChangeTitle.addAndGet(-updateInTime);
-                });
-                try {
-                    Thread.sleep(updateInTime);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        animationThread.start();
+        mainMenuFuture = Main.scheduleForExecution(mainMenuAnimationTask, 0, 1);
     }
     @FXML private void onClick(MouseEvent e) throws IOException {
         if (e.getButton()== MouseButton.PRIMARY) {
             Arc source = ((Arc) e.getSource());
             if (source == startButton) {
-                spriteTester();
+                preGameOptions();
+                startGame();
             } else if (source == highScoreButton) {
                 highScoreMenu();
             } else if (source == settingsButton) {
                 settingsMenu();
             } else if (source == exitButton) {
-                animationThread.stop();
                 mainStage.close();
                 System.exit(0);
             }
@@ -128,88 +154,39 @@ public class MainMenu {
             source.setFill(exitUnEnteredSprite);
         }
     }
-    @FXML private void settingsMenu() {
+    private void settingsMenu() {
+        mainMenuFuture.cancel(false);
         Scene mainScene = mainStage.getScene();
         mainStage.setScene(settingsScene);
-        Thread settingsAnimationThread = new Thread(() ->
-        {   int changeTitleInTime = 1000; // Millisecond
-            int updateInTime = 20; // Millisecond
-            double[] randomRGB = new double[3];
-            double[] curRGB = new double[]{255, 255, 255};
-            Random random = new Random();
-            Label settingsLabel = ((Label) (settingsScene.lookup("#settingsLabel")));
-            AtomicInteger timeTillChangeTitle = new AtomicInteger();
-            while (true) {
-                Platform.runLater(() ->
-                {
-                    if (timeTillChangeTitle.get() <= 0) {
-                        timeTillChangeTitle.set(changeTitleInTime);
-                        randomRGB[0] = random.nextInt(225)+30;
-                        randomRGB[1] = random.nextInt(225)+30;
-                        randomRGB[2] = random.nextInt(225)+30;
-                    }
-                    curRGB[0] += ((randomRGB[0]-curRGB[0])/ timeTillChangeTitle.get())*updateInTime;
-                    curRGB[1] += ((randomRGB[1]-curRGB[1])/ timeTillChangeTitle.get())*updateInTime;
-                    curRGB[2] += ((randomRGB[2]-curRGB[2])/ timeTillChangeTitle.get())*updateInTime;
-                    settingsLabel.setTextFill(Color.rgb((int)curRGB[0], (int)curRGB[1], (int) curRGB[2]));
-                    timeTillChangeTitle.addAndGet(-updateInTime);
-                });
-                try {
-                    Thread.sleep(updateInTime);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        settingsAnimationThread.start();
         Circle backButton = ((Circle) (settingsScene.lookup("#backButton")));
         backButton.setFill(backUnEnteredSprite);
+        settingsFuture = Main.scheduleForExecution(settingsMenuAnimationTask, 0, 1);
         backButton.setOnMouseEntered((e) -> backButton.setFill(backEnteredSprite));
         backButton.setOnMouseExited((e) -> backButton.setFill(backUnEnteredSprite));
-        backButton.setOnMouseClicked((e) -> {mainStage.setScene(mainScene) ; settingsAnimationThread.stop();});
+        backButton.setOnMouseClicked((e) ->
+        {
+            mainStage.setScene(mainScene);
+            settingsFuture.cancel(false);
+            mainMenuFuture = Main.scheduleForExecution(mainMenuAnimationTask, 0, 1);
+        });
     }
-    @FXML private void highScoreMenu() {
+    private void highScoreMenu() {
+        mainMenuFuture.cancel(false);
         Scene mainScene = mainStage.getScene();
         mainStage.setScene(highScoreScene);
-        Thread highScoreAnimationThread = new Thread(() ->
-        {   int changeTitleInTime = 1000; // Millisecond
-            int updateInTime = 20; // Millisecond
-            double[] randomRGB = new double[3];
-            double[] curRGB = new double[]{255, 255, 255};
-            Random random = new Random();
-            Label highScoreLabel = ((Label) (highScoreScene.lookup("#highScoreLabel")));
-            AtomicInteger timeTillChangeTitle = new AtomicInteger();
-            while (true) {
-                Platform.runLater(() ->
-                {
-                    if (timeTillChangeTitle.get() <= 0) {
-                        timeTillChangeTitle.set(changeTitleInTime);
-                        randomRGB[0] = random.nextInt(225)+30;
-                        randomRGB[1] = random.nextInt(225)+30;
-                        randomRGB[2] = random.nextInt(225)+30;
-                    }
-                    curRGB[0] += ((randomRGB[0]-curRGB[0])/ timeTillChangeTitle.get())*updateInTime;
-                    curRGB[1] += ((randomRGB[1]-curRGB[1])/ timeTillChangeTitle.get())*updateInTime;
-                    curRGB[2] += ((randomRGB[2]-curRGB[2])/ timeTillChangeTitle.get())*updateInTime;
-                    highScoreLabel.setTextFill(Color.rgb((int)curRGB[0], (int)curRGB[1], (int) curRGB[2]));
-                    timeTillChangeTitle.addAndGet(-updateInTime);
-                });
-                try {
-                    Thread.sleep(updateInTime);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        highScoreAnimationThread.start();
+        highScoreFuture = Main.scheduleForExecution(highScoreMenuAnimationTask, 0, 1);
         Circle backButton = ((Circle) (highScoreScene.lookup("#backButton")));
         backButton.setFill(backUnEnteredSprite);
         backButton.setOnMouseEntered((e) -> backButton.setFill(backEnteredSprite));
         backButton.setOnMouseExited((e) -> backButton.setFill(backUnEnteredSprite));
-        backButton.setOnMouseClicked((e) -> {mainStage.setScene(mainScene) ; highScoreAnimationThread.stop();});
+        backButton.setOnMouseClicked((e) -> {
+            mainStage.setScene(mainScene) ;
+            highScoreFuture.cancel(false);
+            mainMenuFuture = Main.scheduleForExecution(mainMenuAnimationTask, 0, 1);
+        });
     }
-    // For Debug TODO: REMOVE
-    @FXML private void spriteTester() throws IOException {
+    private void spriteTester() throws IOException {
+        // For Debug
         FXMLLoader loader = new FXMLLoader(getClass().getResource("SpriteTester.fxml"));
         Parent guiTest = loader.load();
         SpriteTester spriteTester = loader.getController();
@@ -217,6 +194,24 @@ public class MainMenu {
         spriteTester.setMainMenuScene(mainStage.getScene());
         mainStage.setScene(new Scene(guiTest, Main.STAGE_WIDTH, Main.STAGE_HEIGHT));
 
+    }
+    private void preGameOptions() {
+
+    }
+    private void startGame() throws IOException {
+        mainMenuFuture.cancel(false);
+        Scene mainScene = mainStage.getScene();
+        Scene endlessGameScene = new Scene(FXMLLoader.load(getClass().getResource("EndlessGame.fxml")), Main.STAGE_WIDTH, Main.STAGE_HEIGHT);
+        mainStage.setScene(endlessGameScene);
+        Circle backButton = ((Circle) (endlessGameScene.lookup("#pauseButton")));
+        backButton.setFill(backUnEnteredSprite);
+        backButton.setOnMouseEntered((e) -> backButton.setFill(backEnteredSprite));
+        backButton.setOnMouseExited((e) -> backButton.setFill(backUnEnteredSprite));
+        backButton.setOnMouseClicked((e) ->
+        {
+            mainStage.setScene(mainScene);
+            mainMenuFuture = Main.scheduleForExecution(mainMenuAnimationTask, 0, 1);
+        });
     }
     //TODO: Load High Score Function
     private void loadHighScoreData() {

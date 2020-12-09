@@ -27,7 +27,7 @@ public class SpriteTester {
     @FXML private Node curLoaded;
     public void initialize() {
         ObservableList<String> options = FXCollections.observableArrayList("ConcentricTripleCircleObstacle",
-                "AdjacentDoubleCircleObstacle", "SingleCircleObstacle", "TriangleObstacle", "SquareObstacle", "LinesObstacles"
+                "AdjacentDoubleCircleObstacle", "SingleCircleObstacle", "TriangleObstacle", "SquareObstacle", "LinesObstacle"
                 , "CrossObstacle", "Switch", "Star", "Ball");
         selection.setItems(options);
         selection.getSelectionModel().selectFirst();
@@ -90,7 +90,7 @@ public class SpriteTester {
                 xRad = 100; yRad = 100; break;
             case "SquareObstacle":
                 xRad = 75; yRad = 75; break;
-            case "LinesObstacles":
+            case "LinesObstacle":
                 xRad = 250; yRad = 10; break;
             case "Switch":
             case "Ball":

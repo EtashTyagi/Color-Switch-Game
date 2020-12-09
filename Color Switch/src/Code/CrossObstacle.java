@@ -2,51 +2,65 @@ package Code;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
+import javafx.scene.Group;
+import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Rectangle;
 
-public class CrossObstacle extends Obstacle{
-    @FXML private Node crossObstacle;
-    @FXML private Rectangle firstRectangle;
-    @FXML private Rectangle secondRectangle;
-    @FXML private Rectangle thirdRectangle;
-    @FXML private Rectangle fourthRectangle;
-    private double thickness = 20;
-    private double radius = 125;
-    private double rotateSpeed = 0.1;
+import java.util.ArrayList;
 
-    @FXML private void initialize() {
+public class CrossObstacle extends Obstacle {
+    @FXML private GridPane mainPane;
+    @FXML private Group crossObstacle;
+    @FXML private ArrayList<Rectangle> arms;
+    @FXML private Rectangle firstOffset;
+    private double thickness = 20;
+    private double radius = 150;
+    private double combined = 10;
+    private double rotateSpeed = 0.05;
+
+    @FXML void initialize() {
+        super.initialize();
         Platform.runLater(() ->
         {
-            firstRectangle.setFill(Main.GAME_COLORS[0]);
-            secondRectangle.setFill(Main.GAME_COLORS[1]);
-            thirdRectangle.setFill(Main.GAME_COLORS[2]);
-            fourthRectangle.setFill(Main.GAME_COLORS[3]);
+            mainPane.setMaxHeight(getHeight()); mainPane.setMaxWidth(getWidth());
+            mainPane.setTranslateX(mainPane.getTranslateX() + xOffset());
+            for (int index = 0; index < arms.size(); index++) {
+                arms.get(index).setFill(Main.GAME_COLORS[index]);
+            }
+            firstOffset.setFill(Main.GAME_COLORS[0]);
         });
-        doMovement();
     }
     //TODO: assign speed and difficulty based on this
     public void setDifficulty(double difficulty) {
 
     }
-    //TODO: Check For Collision
     @Override
     public boolean hasCollidedWithBall(Ball ball) {
+        double cX = mainPane.getTranslateX() + radius;
+        double cY = mainPane.getTranslateY() + radius;
+        for (Rectangle arm: arms) {
+            if (CollisionDetector.ballAndRectangle(arm, ball, cX, cY,
+                    cX - thickness / 2 + arm.getTranslateX() + 1,
+                    cY - thickness / 2 + arm.getTranslateY() + 1, crossObstacle.getRotate())) {
+                return true;
+            }
+        }
         return false;
     }
     @Override
     void doMovement() {
-        Thread animationThread = new Thread(() ->
-        {
-            while (true) {
-                Platform.runLater(() -> crossObstacle.setRotate(crossObstacle.getRotate()+rotateSpeed*Main.UPDATE_IN));
-                try {
-                    Thread.sleep(Main.UPDATE_IN);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        animationThread.start();
+        Platform.runLater(() -> crossObstacle.setRotate(crossObstacle.getRotate() + rotateSpeed * Main.UPDATE_IN));
+    }
+    @Override
+    public double getHeight() {
+        return 2*radius;
+    }
+    @Override
+    public double getWidth() {
+        return 2*radius;
+    }
+    @Override
+    double xOffset() {
+        return Main.STAGE_WIDTH / 2 - getWidth() / 2 + radius / 2;
     }
 }

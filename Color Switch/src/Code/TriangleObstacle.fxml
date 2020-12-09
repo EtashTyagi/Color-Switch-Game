@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.*?>
-<?import javafx.scene.layout.*?>
-
+<?import javafx.scene.Group?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.shape.Rectangle?>
-<Group xmlns="http://javafx.com/javafx"
-       xmlns:fx="http://javafx.com/fxml" fx:controller="Code.TriangleObstacle" fx:id="triangle">
-    <GridPane>
-        <Group GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.halignment="LEFT">
-            <Rectangle fx:id="first" height="20" width="200" fill="gold"  rotate="-60" arcHeight="20" arcWidth="20"/>
-        </Group>
-        <Group GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.halignment="RIGHT">
-            <Rectangle fx:id="second" height="20" width="200" fill="royalblue" rotate="60" arcHeight="20" arcWidth="20"/>
-        </Group>
-        <Group GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.valignment="BOTTOM">
-            <Rectangle fx:id="third" height="20" width="200" fill="forestgreen" arcHeight="20" arcWidth="20"/>
-        </Group>
+<?import java.util.ArrayList?>
+<GridPane xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml" fx:controller="Code.TriangleObstacle" fx:id="mainPane">
+    <Group fx:id="triangle">
+        <Rectangle height="231" translateY="-50" fill="#1c1c1c"/>
+        <Rectangle fx:id="top" height="15" width="200" arcHeight="50" arcWidth="50" fill="#1c1c1c"/>
+        <Rectangle fx:id="right" height="15" width="200" rotate="-60" translateY="86.5" translateX="50" arcHeight="50" arcWidth="50" fill="#1c1c1c"/>
+        <Rectangle fx:id="left" height="15" width="200" translateY="86.5" translateX="-50" rotate="60" arcHeight="50" arcWidth="50" fill="#1c1c1c"/>
+        <fx:define>
+            <ArrayList fx:id="sides">
+                <fx:reference source="top"/>
+                <fx:reference source="right"/>
+                <fx:reference source="left"/>
+            </ArrayList>
+        </fx:define>
+    </Group>
+</GridPane>
 
-    </GridPane>
-</Group>

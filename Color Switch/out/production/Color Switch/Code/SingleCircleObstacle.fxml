@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.*?>
+<?import javafx.scene.Group?>
 <?import javafx.scene.layout.*?>
-
-<?import javafx.scene.shape.Arc?>
+<?import javafx.scene.shape.*?>
 <?import java.util.ArrayList?>
 <GridPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml" fx:controller="Code.SingleCircleObstacle" fx:id="mainPane">
     <children>
         <Group fx:id="circle" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
             <Arc fx:id="first" length="90" radiusX="100" radiusY="100" stroke="#1c1c1c" strokeWidth="0" type="ROUND"
-                 GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
-            <Arc fx:id="second" length="90" radiusX="100" radiusY="100" startAngle="90" stroke="#1c1c1c" strokeWidth="0"
+                 GridPane.columnIndex="1" fill="#1c1c1c" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
+            <Arc fx:id="second" length="90" fill="#1c1c1c" radiusX="100" radiusY="100" startAngle="90" stroke="#1c1c1c" strokeWidth="0"
                  type="ROUND" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
-            <Arc fx:id="third" length="90" radiusX="100" radiusY="100" startAngle="180" stroke="#1c1c1c" strokeWidth="0"
+            <Arc fx:id="third" length="90" fill="#1c1c1c" radiusX="100" radiusY="100" startAngle="180" stroke="#1c1c1c" strokeWidth="0"
                  type="ROUND" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-            <Arc fx:id="fourth" length="90" radiusX="100" radiusY="100" startAngle="270" stroke="#1c1c1c" strokeWidth="0"
+            <Arc fx:id="fourth" length="90" fill="#1c1c1c" radiusX="100" radiusY="100" startAngle="270" stroke="#1c1c1c" strokeWidth="0"
                  type="ROUND" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
             <fx:define>
                 <ArrayList fx:id="arcs">

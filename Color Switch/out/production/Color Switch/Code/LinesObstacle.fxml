@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.shape.*?>
+<?import java.util.ArrayList?>
+<HBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="Code.LinesObstacle" spacing="-0.5"
+      fx:id="mainPane">
+    <Rectangle width="125.61" height="20" strokeWidth="0" fx:id="r1" fill="#1c1c1c"/>
+    <Rectangle width="125.61" height="20" strokeWidth="0" fx:id="r2" fill="#1c1c1c"/>
+    <Rectangle width="125.61" height="20" strokeWidth="0" fx:id="r3" fill="#1c1c1c"/>
+    <Rectangle width="125.61" height="20" strokeWidth="0" fx:id="r4" fill="#1c1c1c"/>
+    <Rectangle height="20" fx:id="r5"/>
+    <fx:define>
+        <ArrayList fx:id="parts">
+            <fx:reference source="r1"/>
+            <fx:reference source="r2"/>
+            <fx:reference source="r3"/>
+            <fx:reference source="r4"/>
+            <fx:reference source="r5"/>
+        </ArrayList>
+
+    </fx:define>
+</HBox>

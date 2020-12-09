@@ -3,59 +3,62 @@ package Code;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
-import javafx.scene.paint.Color;
+import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Rectangle;
 
-public class SquareObstacle extends Obstacle{
-    @FXML private Group square;
-    @FXML private Rectangle first;
-    @FXML private Rectangle second;
-    @FXML private Rectangle third;
-    @FXML private Rectangle fourth;
-    @FXML private Rectangle firstShort;
-    @FXML private Rectangle secondShort;
-    @FXML private Rectangle thirdShort;
-    @FXML private Rectangle fourthShort;
-    private double thickness = 20;
-    private double sideSize = 125;
-    private double rotateSpeed = 0.1;
+import java.util.ArrayList;
 
-    @FXML private void initialize() {
+public class SquareObstacle extends Obstacle {
+    @FXML private GridPane mainPane;
+    @FXML private Group square;
+    @FXML private ArrayList<Rectangle> sides;
+    private double thickness = 20;
+    private double sideSize = 150;
+    private double rotateSpeed = 0.05;
+
+    @FXML void initialize() {
+        super.initialize();
         Platform.runLater(() ->
         {
-            first.setFill(Main.GAME_COLORS[0]);
-            second.setFill(Main.GAME_COLORS[1]);
-            third.setFill(Main.GAME_COLORS[2]);
-            fourth.setFill(Main.GAME_COLORS[3]);
-            firstShort.setFill(Main.GAME_COLORS[0]);
-            secondShort.setFill(Main.GAME_COLORS[1]);
-            thirdShort.setFill(Main.GAME_COLORS[2]);
-            fourthShort.setFill(Main.GAME_COLORS[3]);
+            mainPane.setTranslateX(mainPane.getTranslateX() + xOffset());
+            mainPane.setMaxHeight(getHeight()); mainPane.setMaxWidth(getWidth());
+            for (int index = 0; index < sides.size(); index++) {
+                sides.get(index).setFill(Main.GAME_COLORS[index]);
+            }
         });
-        doMovement();
     }
     //TODO: assign speed and difficulty based on this
     public void setDifficulty(double difficulty) {
 
     }
-    //TODO: Check For Collision
     @Override
     public boolean hasCollidedWithBall(Ball ball) {
+        double cX = mainPane.getTranslateX() + (sideSize + thickness)/2;
+        double cY = mainPane.getTranslateY() + (sideSize + thickness)/2;
+        for (Rectangle side : sides) {
+            if (CollisionDetector.ballAndRectangle(side, ball, cX, cY,
+                    mainPane.getTranslateX() + side.getTranslateX() + sideSize,
+                    mainPane.getTranslateY() + side.getTranslateY(), square.getRotate())) {
+                return true;
+            }
+        }
         return false;
     }
     @Override
     void doMovement() {
-        Thread animationThread = new Thread(() ->
-        {
-            while (true) {
-                Platform.runLater(() -> square.setRotate(square.getRotate()+rotateSpeed*Main.UPDATE_IN));
-                try {
-                    Thread.sleep(Main.UPDATE_IN);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        animationThread.start();
+        Platform.runLater(() -> square.setRotate(square.getRotate() + rotateSpeed * Main.UPDATE_IN));
+    }
+    @Override
+    public double getHeight() {
+        return sideSize + thickness;
+    }
+    @Override
+    public double getWidth() {
+        return getHeight();
+    }
+
+    @Override
+    double xOffset() {
+        return Main.STAGE_WIDTH/2 - getWidth() / 2;
     }
 }
