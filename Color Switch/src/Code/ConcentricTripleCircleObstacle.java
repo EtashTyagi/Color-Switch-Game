@@ -18,7 +18,7 @@ public class ConcentricTripleCircleObstacle extends Obstacle {
     @FXML private ArrayList<Arc> innerArcs;
     private double thickness = 17;
     private double radius = 82;
-    private double rotateSpeed = 0.05;
+    private double rotateSpeed = 0.1;
 
     @FXML void initialize() {
         super.initialize();

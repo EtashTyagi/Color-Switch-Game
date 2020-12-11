@@ -13,7 +13,7 @@ public class LinesObstacle extends Obstacle {
     @FXML private ArrayList<Rectangle> parts;
     private double thickness = 20;
     private final double defaultLength = 125.61;
-    private double speed = 0.05;
+    private double speed = 0.1;
 
     @FXML void initialize() {
         super.initialize();

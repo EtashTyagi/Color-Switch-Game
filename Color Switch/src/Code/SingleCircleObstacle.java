@@ -14,7 +14,7 @@ public class SingleCircleObstacle extends Obstacle {
     @FXML private ArrayList<Arc> arcs;
     private double thickness = 15;
     private double radius = 83; //INNER
-    private double rotateSpeed = 0.05;
+    private double rotateSpeed = 0.1;
 
     @FXML public void initialize() {
         super.initialize();

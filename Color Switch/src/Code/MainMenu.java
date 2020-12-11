@@ -112,7 +112,7 @@ public class MainMenu {
         exitButton.setFill(exitUnEnteredSprite);
         highScoreScene = new Scene(FXMLLoader.load(getClass().getResource("HighScore.fxml")), Main.STAGE_WIDTH, Main.STAGE_HEIGHT);
         settingsScene = new Scene(FXMLLoader.load(getClass().getResource("Settings.fxml")), Main.STAGE_WIDTH, Main.STAGE_HEIGHT);
-        mainMenuFuture = Main.scheduleForExecution(mainMenuAnimationTask, 0, 1);
+        mainMenuFuture = Main.scheduleForExecution(mainMenuAnimationTask, 10, 1);
     }
     @FXML private void onClick(MouseEvent e) throws IOException {
         if (e.getButton()== MouseButton.PRIMARY) {

@@ -7,7 +7,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Circle;
 import javafx.util.Pair;
-
 import java.util.concurrent.ScheduledFuture;
 
 public class EndlessGame extends Game {
@@ -15,29 +14,31 @@ public class EndlessGame extends Game {
     @FXML private Circle pauseButton;
     @FXML private Label scoreLabel;
     @FXML private GridPane gamePane;
-    private ScheduledFuture<?> futureSpawn;
-    private Runnable obstacleMaker = () -> {
-        Platform.runLater(() -> {
-            if (getLatestInsertion() == null || getLatestInsertion().getTranslateY() > 100) {
-                spawnRandomObstacle(gamePane);
-            }
-            if (getGameObjects().size() > 3) {
-                Pair<Node, Collidable> object = getGameObjects().poll();
-                assert object != null;
-                if (object.getValue() instanceof Obstacle) {
-                    ((Obstacle) object.getValue()).stopMovement();
+    @FXML private GridPane mainPane;
+    private ScheduledFuture<?> futureObjectMaker;
+    private final Runnable gameObjectMaker = () -> {
+        if (getLatestNodeAndController() == null || getLatestNodeAndController().getKey().getTranslateY() > 0) {
+            if (getLatestNodeAndController() != null &&
+                    getLatestNodeAndController().getValue() instanceof Obstacle) {
+                spawnStar(gamePane);
+            } else if (getLatestNodeAndController() != null) {
+                if (!(getLatestNodeAndController().getValue() instanceof Switch) && Main.RANDOM.nextBoolean()) {
+                    spawnSwitch(gamePane);
+                } else {
+                    spawnRandomObstacle(gamePane);
                 }
-                getCollisionDetector().poll();
-                gamePane.getChildren().remove(object.getKey());
+            } else {
+                spawnRandomObstacle(gamePane);
+                Platform.runLater(() -> getLatestNodeAndController().getKey().setTranslateY(0));
             }
-        });
+        }
     };
 
     @FXML void initialize() {
         scoreLabel.toFront();
         pauseButton.toFront();
-        spawnBall(gamePane);
-        futureSpawn = Main.scheduleForExecution(obstacleMaker, 0, 10);
+        spawnBall(gamePane, mainPane);
+        futureObjectMaker = Main.scheduleForExecution(gameObjectMaker, 0, 1);
     }
     //TODO: Update Game State Function
     @Override
@@ -49,6 +50,21 @@ public class EndlessGame extends Game {
     }
     @Override
     public void onCollisionDetected() {
-        // Go Back TO Main Menu
+        futureObjectMaker.cancel(false);
+        getBall().stop();
+    }
+    @Override
+    public void onStarCollected(Pair<Node, Star> nodeStarPair) {
+        nodeStarPair.getValue().stopCollisionDetector();
+        getGameObjectsNodeAndController().remove(nodeStarPair.getKey());
+        gamePane.getChildren().remove(nodeStarPair.getKey());
+        scoreLabel.setText(Integer.toString(Integer.parseInt(scoreLabel.getText()) + 1));
+    }
+    @Override
+    public void onSwitchCollected(Pair<Node, Switch> nodeSwitchPair) {
+        nodeSwitchPair.getValue().stopCollisionDetector();
+        getBall().setColor(nodeSwitchPair.getValue().getNewColor());
+        getGameObjectsNodeAndController().remove(nodeSwitchPair.getKey());
+        gamePane.getChildren().remove(nodeSwitchPair.getKey());
     }
 }

@@ -16,7 +16,7 @@ public class CrossObstacle extends Obstacle {
     private double thickness = 20;
     private double radius = 150;
     private double combined = 10;
-    private double rotateSpeed = 0.05;
+    private double rotateSpeed = 0.1;
 
     @FXML void initialize() {
         super.initialize();

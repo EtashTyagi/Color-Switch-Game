@@ -18,7 +18,7 @@ public class AdjacentDoubleCircleObstacle extends Obstacle {
     private final double thickness = 10;
     private double radius1 = 83; //TODO: Set This Is Inner Radius
     private double radius2 = 63; //TODO: Set
-    private double rotateSpeed = -0.05;
+    private double rotateSpeed = -0.1;
 
     @FXML void initialize() {
         super.initialize();
@@ -66,6 +66,6 @@ public class AdjacentDoubleCircleObstacle extends Obstacle {
     }
     @Override
     double xOffset() {
-        return Main.STAGE_WIDTH / 2 - 2*(radius1 + thickness + 1);
+        return Main.STAGE_WIDTH / 2 - 2*(radius1 + thickness + 2);
     }
 }

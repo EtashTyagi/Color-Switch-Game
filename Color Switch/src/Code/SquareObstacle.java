@@ -14,7 +14,7 @@ public class SquareObstacle extends Obstacle {
     @FXML private ArrayList<Rectangle> sides;
     private double thickness = 20;
     private double sideSize = 150;
-    private double rotateSpeed = 0.05;
+    private double rotateSpeed = 0.1;
 
     @FXML void initialize() {
         super.initialize();
@@ -56,7 +56,6 @@ public class SquareObstacle extends Obstacle {
     public double getWidth() {
         return getHeight();
     }
-
     @Override
     double xOffset() {
         return Main.STAGE_WIDTH/2 - getWidth() / 2;

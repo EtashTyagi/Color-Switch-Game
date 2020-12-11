@@ -14,6 +14,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 // DONE MAIN
+// TODO CAPTURE CLICK ALL OVER THE STAGE
 public class Main extends Application {
     final public static double STAGE_WIDTH = 500;
     final public static double STAGE_HEIGHT = 700;

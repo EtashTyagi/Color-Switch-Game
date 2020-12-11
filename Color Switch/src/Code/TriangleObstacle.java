@@ -15,7 +15,7 @@ public class TriangleObstacle extends Obstacle {
     @FXML private ArrayList<Rectangle> sides;
     private double thickness = 15;
     private double sideSize = 200;
-    private double rotateSpeed = 0.05;
+    private double rotateSpeed = 0.1;
     private double diam = 231;
 
     @FXML void initialize() {

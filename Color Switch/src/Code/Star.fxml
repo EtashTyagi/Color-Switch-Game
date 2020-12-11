@@ -2,6 +2,9 @@
 
 <?import javafx.scene.shape.Rectangle?>
 
-<Rectangle xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml" fx:controller="Code.Star" strokeWidth="0" fx:id="starRect" height="40" width="40">
-</Rectangle>
+<?import javafx.scene.layout.GridPane?>
+<GridPane xmlns="http://javafx.com/javafx"
+        xmlns:fx="http://javafx.com/fxml" fx:controller="Code.Star" fx:id="mainPane">
+
+    <Rectangle strokeWidth="0" fx:id="starRect" height="40" width="40"/>
+</GridPane>
