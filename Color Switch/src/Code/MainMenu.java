@@ -6,7 +6,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -16,6 +19,8 @@ import javafx.scene.shape.Arc;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -28,6 +33,7 @@ public class MainMenu {
     @FXML private Group outerCircle;
     @FXML private Group middleCircle;
     @FXML private Group innerCircle;
+    private Player player;
     private final ImagePattern startUnEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\StartUE.png"));
     private final ImagePattern startEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\StartE.png"));
     private final ImagePattern highScoreUnEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\HighScoreUE.png"));
@@ -36,7 +42,7 @@ public class MainMenu {
     private final ImagePattern settingsEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\SettingsE.png"));
     private final ImagePattern exitUnEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\ExitUE.png"));
     private final ImagePattern exitEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\ExitE.png"));
-    private final ImagePattern backUnEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\backUE.png"));
+    private final ImagePattern backUnEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\backUE.png")); // TODO CHANGE COLOR TO DOGERBLUE
     private final ImagePattern backEnteredSprite = new ImagePattern(new Image("file:Resources\\Images\\backE.png"));
     private ScheduledFuture<?> mainMenuFuture;
     private Scene highScoreScene;
@@ -105,6 +111,12 @@ public class MainMenu {
     public void setMainStage(Stage primaryStage) {
         this.mainStage = primaryStage;
     }
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+    public Player getPlayer() {
+        return player;
+    }
     @FXML public void initialize() throws IOException {
         startButton.setFill(startUnEnteredSprite);
         highScoreButton.setFill(highScoreUnEnteredSprite);
@@ -113,6 +125,8 @@ public class MainMenu {
         highScoreScene = new Scene(FXMLLoader.load(getClass().getResource("HighScore.fxml")), Main.STAGE_WIDTH, Main.STAGE_HEIGHT);
         settingsScene = new Scene(FXMLLoader.load(getClass().getResource("Settings.fxml")), Main.STAGE_WIDTH, Main.STAGE_HEIGHT);
         mainMenuFuture = Main.scheduleForExecution(mainMenuAnimationTask, 10, 1);
+        player = (PlayerFactory.createPlayer("Guest", "") == null) ? (PlayerFactory.validate("Guest", ""))
+                : (PlayerFactory.validate("Guest", ""));
     }
     @FXML private void onClick(MouseEvent e) throws IOException {
         if (e.getButton()== MouseButton.PRIMARY) {
@@ -157,7 +171,6 @@ public class MainMenu {
     private void settingsMenu() {
         mainMenuFuture.cancel(false);
         Scene mainScene = mainStage.getScene();
-        mainStage.setScene(settingsScene);
         Circle backButton = ((Circle) (settingsScene.lookup("#backButton")));
         backButton.setFill(backUnEnteredSprite);
         settingsFuture = Main.scheduleForExecution(settingsMenuAnimationTask, 0, 1);
@@ -169,6 +182,63 @@ public class MainMenu {
             settingsFuture.cancel(false);
             mainMenuFuture = Main.scheduleForExecution(mainMenuAnimationTask, 0, 1);
         });
+        Button loginButton = ((Button) (settingsScene.lookup("#loginButton")));
+        TextField username = ((TextField) (settingsScene.lookup("#username")));
+        TextField password = ((TextField) (settingsScene.lookup("#password")));
+        Label loginLabel = ((Label) settingsScene.lookup("#loginLabel"));
+        loginButton.setOnMouseClicked((e) -> {
+            Player player = PlayerFactory.validate(username.getText(), password.getText());
+            if (player == null) {
+                loginLabel.setText("Invalid Login!\nWelcome "+ ((this.player == null) ? ("Guest") : (this.player.getUserName())));
+            } else {
+                this.player = player;
+                loginLabel.setText("Welcome " + this.player.getUserName());
+            }
+        });
+        Button signupButton = ((Button) (settingsScene.lookup("#signupButton")));
+        signupButton.setOnMouseClicked((e) -> {
+            if (!username.getText().isBlank()) {
+                Player player = PlayerFactory.createPlayer(username.getText(), password.getText());
+                if (player == null) {
+                    loginLabel.setText("Player Exists!\nWelcome "+ ((this.player == null) ? ("Guest") : (this.player.getUserName())));
+                } else {
+                    this.player = player;
+                    loginLabel.setText("Welcome " + this.player.getUserName());
+                }
+            } else {
+                loginLabel.setText("Blank Name!\nWelcome "+ ((this.player == null) ? ("Guest") : (this.player.getUserName())));
+            }
+        });
+        Button applyButton = ((Button) (settingsScene.lookup("#applyButton")));
+        ColorPicker cp1 = (ColorPicker) (settingsScene.lookup("#cp1"));
+        ColorPicker cp2 = (ColorPicker) (settingsScene.lookup("#cp2"));
+        ColorPicker cp3 = (ColorPicker) (settingsScene.lookup("#cp3"));
+        ColorPicker cp4 = (ColorPicker) (settingsScene.lookup("#cp4"));
+        cp1.setValue(Main.GAME_COLORS[0]);
+        cp2.setValue(Main.GAME_COLORS[1]);
+        cp3.setValue(Main.GAME_COLORS[2]);
+        cp4.setValue(Main.GAME_COLORS[3]);
+        applyButton.setOnMouseClicked((e) -> {
+                Set<Color> selectedColors = new HashSet<>();
+                selectedColors.add(cp1.getValue());
+                selectedColors.add(cp2.getValue());
+                selectedColors.add(cp3.getValue());
+                selectedColors.add(cp4.getValue());
+                if (selectedColors.size() == 4) {
+                    Object[] colors = selectedColors.toArray();
+                    Main.GAME_COLORS[0] = (Color) colors[0];
+                    Main.GAME_COLORS[1] = (Color) colors[1];
+                    Main.GAME_COLORS[2] = (Color) colors[2];
+                    Main.GAME_COLORS[3] = (Color) colors[3];
+                } else {
+                    cp1.setValue(Main.GAME_COLORS[0]);
+                    cp2.setValue(Main.GAME_COLORS[1]);
+                    cp3.setValue(Main.GAME_COLORS[2]);
+                    cp4.setValue(Main.GAME_COLORS[3]);
+                }
+            }
+        );
+        mainStage.setScene(settingsScene);
     }
     private void highScoreMenu() {
         mainMenuFuture.cancel(false);
@@ -200,18 +270,13 @@ public class MainMenu {
     }
     private void startGame() throws IOException {
         mainMenuFuture.cancel(false);
-        Scene mainScene = mainStage.getScene();
-        Scene endlessGameScene = new Scene(FXMLLoader.load(getClass().getResource("EndlessGame.fxml")), Main.STAGE_WIDTH, Main.STAGE_HEIGHT);
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("EndlessGame.fxml"));
+        Scene endlessGameScene = new Scene(loader.load(), Main.STAGE_WIDTH, Main.STAGE_HEIGHT);
+        ((Game) loader.getController()).setMainStage(mainStage);
+        ((Game) loader.getController()).setPlayer(player);
+        System.out.println(player);
         mainStage.setScene(endlessGameScene);
-        Circle backButton = ((Circle) (endlessGameScene.lookup("#pauseButton")));
-        backButton.setFill(backUnEnteredSprite);
-        backButton.setOnMouseEntered((e) -> backButton.setFill(backEnteredSprite));
-        backButton.setOnMouseExited((e) -> backButton.setFill(backUnEnteredSprite));
-        backButton.setOnMouseClicked((e) ->
-        {
-            mainStage.setScene(mainScene);
-            mainMenuFuture = Main.scheduleForExecution(mainMenuAnimationTask, 0, 1);
-        });
     }
     //TODO: Load High Score Function
     private void loadHighScoreData() {

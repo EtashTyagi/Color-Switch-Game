@@ -2,15 +2,11 @@ package Code;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.paint.Color;
 
 import java.util.concurrent.ScheduledFuture;
 
 //TODO: Check Error [Difficulty Must Be 0-1]
 public abstract class Obstacle implements Collidable {
-    private double difficulty;
-    private Color[] colors;
-    private Color passingColor;
     private ScheduledFuture<?> mover;
     private ScheduledFuture<?> collisionDetector;
 

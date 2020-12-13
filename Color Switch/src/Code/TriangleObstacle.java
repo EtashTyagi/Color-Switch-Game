@@ -13,6 +13,7 @@ public class TriangleObstacle extends Obstacle {
     @FXML private GridPane mainPane;
     @FXML private Group triangle;
     @FXML private ArrayList<Rectangle> sides;
+    private int unPassable = 3;
     private double thickness = 15;
     private double sideSize = 200;
     private double rotateSpeed = 0.1;
@@ -31,6 +32,7 @@ public class TriangleObstacle extends Obstacle {
         });
     }
     public void setPassableColor(Color passableColor) {
+        int swap = Main.RANDOM.nextInt(sides.size());
         Platform.runLater(() ->
         {
             for (Rectangle side : sides) {
@@ -38,8 +40,12 @@ public class TriangleObstacle extends Obstacle {
                     return;
                 }
             }
-            sides.get(0).setFill(passableColor);
+            sides.get(swap).setFill(passableColor);
+            unPassable = swap;
         });
+    }
+    public int getUnPassableIndex() {
+        return unPassable;
     }
     //TODO: assign speed and difficulty based on this
     public void setDifficulty(double difficulty) {

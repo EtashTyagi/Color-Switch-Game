@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
-import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
 import java.util.concurrent.ScheduledFuture;
@@ -19,6 +18,9 @@ public class Switch implements Collidable {
     @FXML private void initialize() {
         Platform.runLater(() -> {
             mainPane.setTranslateX(xOffset() - 1);
+            for (int index = 0; index < arcs.size(); index++) {
+                arcs.get(index).setFill(Main.GAME_COLORS[index]);
+            }
         });
     }
     public Color getNewColor() {

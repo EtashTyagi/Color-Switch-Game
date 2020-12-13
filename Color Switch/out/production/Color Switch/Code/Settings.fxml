@@ -12,10 +12,15 @@
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="125.0" minWidth="10.0" prefWidth="85.6" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints maxHeight="226.4" minHeight="10.0" prefHeight="103.6" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="313.59999618530276" minHeight="10.0" prefHeight="38.400000000000006" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="289.4000152587891" minHeight="5.599999999999994" prefHeight="47.19999999999999" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="525.6000152587891" minHeight="10.0" prefHeight="510.4" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="226.4" minHeight="10.0" prefHeight="126.6" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="313.59999618530276" minHeight="10.0" prefHeight="65.39999999999999" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="289.4000152587891" minHeight="5.599999999999994" prefHeight="33.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="289.4000152587891" minHeight="5.599999999999994" prefHeight="33.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="322.59996948242195" minHeight="5.599999999999994" prefHeight="47.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="322.59996948242195" minHeight="2.3999999999999773" prefHeight="77.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="525.6000152587891" minHeight="10.0" prefHeight="53.19999999999999" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="525.6000152587891" minHeight="10.0" prefHeight="42.39999999999998" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="525.6000152587891" minHeight="0.0" prefHeight="220.40000000000003" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
               <Circle fx:id="backButton" fill="darkgrey" radius="25.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
@@ -24,18 +29,108 @@
                       <Font name="Comic Sans MS Bold" size="54.0" />
                   </font>
               </Label>
-              <Button text="Load Game" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-        </Button>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+              <Button fx:id="loginButton" prefHeight="17.0" prefWidth="74.0" text=" Login" translateX="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font></Button>
+      <HBox alignment="CENTER" prefHeight="66.0" prefWidth="193.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
          <children>
-                      <Label text="Sound: " textFill="lightskyblue">
+                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="113.0" text="Sound" textAlignment="CENTER" textFill="lightskyblue">
                           <font>
                               <Font name="System Bold" size="20" />
                           </font>
                       </Label>
-                      <Slider>
+                      <Slider prefHeight="14.0" prefWidth="187.0">
                 </Slider>
          </children>
       </HBox>
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="159.0" layoutY="24.0" prefHeight="71.0" prefWidth="293.0" text=" Local User Login" textAlignment="CENTER" textFill="#e4ed39" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+         <font>
+            <Font name="System Bold" size="36.0" />
+         </font>
+      </Label>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+         <children>
+            <Label alignment="CENTER" prefHeight="100.0" prefWidth="118.0" text="User" textAlignment="CENTER" textFill="LIGHTSKYBLUE">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <TextField fx:id="username" prefHeight="26.0" prefWidth="193.0" promptText="username" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" layoutX="109.0" layoutY="296.0" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+         <children>
+            <Label alignment="CENTER" prefHeight="100.0" prefWidth="118.0" text="Password" textAlignment="CENTER" textFill="LIGHTSKYBLUE">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <PasswordField fx:id="password" prefHeight="26.0" prefWidth="193.0" promptText="password" />
+         </children>
+      </HBox>
+      <Label fx:id="loginState" alignment="CENTER" contentDisplay="CENTER" prefHeight="54.0" prefWidth="250.0" text="Other Settings" textAlignment="CENTER" textFill="#e4ed39" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER">
+         <font>
+            <Font name="System Bold" size="36.0" />
+         </font>
+      </Label>
+      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
+         <children>
+            <HBox alignment="TOP_CENTER" prefHeight="35.0" prefWidth="315.0">
+               <children>
+                  <Label alignment="CENTER" prefHeight="2.0" prefWidth="118.0" text="Color1" textAlignment="CENTER" textFill="LIGHTSKYBLUE">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <ColorPicker fx:id="cp1" prefHeight="30.0" prefWidth="183.0" />
+               </children></HBox>
+            <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="35.0" prefWidth="309.0">
+               <children>
+                  <Label alignment="CENTER" prefHeight="2.0" prefWidth="118.0" text="Color2" textAlignment="CENTER" textFill="LIGHTSKYBLUE">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <ColorPicker fx:id="cp2" prefHeight="30.0" prefWidth="184.0" />
+               </children>
+            </HBox>
+            <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="52.0" prefHeight="35.0" prefWidth="311.0">
+               <children>
+                  <Label alignment="CENTER" prefHeight="2.0" prefWidth="118.0" text="Color3" textAlignment="CENTER" textFill="LIGHTSKYBLUE">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <ColorPicker fx:id="cp3" prefHeight="30.0" prefWidth="184.0" />
+               </children>
+            </HBox>
+            <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="95.0" prefHeight="35.0" prefWidth="317.0">
+               <children>
+                  <Label alignment="CENTER" prefHeight="2.0" prefWidth="118.0" text="Color4" textAlignment="CENTER" textFill="LIGHTSKYBLUE">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <ColorPicker fx:id="cp4" prefHeight="30.0" prefWidth="183.0" />
+               </children>
+            </HBox>
+            <Button fx:id="applyButton" mnemonicParsing="false" prefHeight="34.0" prefWidth="90.0" text="Apply" translateY="10.0">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Button>
+         </children>
+      </VBox>
+      <Button fx:id="signupButton" mnemonicParsing="false" prefHeight="17.0" prefWidth="74.0" text="Signup" translateX="-50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Button>
+      <Label fx:id="loginLabel" text="Welcome Guest!" textAlignment="CENTER" textFill="#a570d7" translateY="5.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="TOP">
+         <font>
+            <Font name="System Bold Italic" size="24.0" />
+         </font>
+      </Label>
          </children>
 </GridPane>

@@ -7,7 +7,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.shape.Arc;
 
 import java.util.ArrayList;
-import java.util.concurrent.ScheduledFuture;
 
 public class AdjacentDoubleCircleObstacle extends Obstacle {
     @FXML private HBox mainPane;

@@ -3,15 +3,12 @@ package Code;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 import java.util.HashMap;
-import java.util.Random;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class Ball {
     @FXML private Circle ball;
@@ -55,36 +52,41 @@ public class Ball {
     }
     public void initializeMover(HashMap<Node, Collidable> gameObjectsNodeAndController, Pane gameSpace) {
         mover = Main.scheduleForExecution(() -> {
-            if (ball.getTranslateY() <= 550) {
-                Platform.runLater(() -> ball.setTranslateY(ball.getTranslateY() - velocity * Main.UPDATE_IN));
-                Platform.runLater(() -> velocity = Math.max(velocity - 0.001 * Main.UPDATE_IN, -0.5));
-            } else {
-                ball.setTranslateY(545);
-                velocity = 0;
-            }
-            AtomicReference<Double> upped = new AtomicReference<>((double) 0); // SYNCHRONISE
-            double half = Main.STAGE_HEIGHT / 2;
-            double curPos = ball.getTranslateY();
-            if (curPos < half) {
-                Platform.runLater(() -> ball.setTranslateY(ball.getTranslateY() - 1 * Main.UPDATE_IN * (curPos - half) / half));
-                gameObjectsNodeAndController.forEach((K, V) ->
-                {
-                    Platform.runLater(() -> K.setTranslateY(K.getTranslateY() - 1 * Main.UPDATE_IN * (curPos - half) / half));
-                    if (K.getTranslateY() > Main.STAGE_HEIGHT) {
-                        if (V instanceof Obstacle) {
-                            ((Obstacle) V).stopAllSubTasks();
-                        } else {
-                            V.stopCollisionDetector();
+            try {
+                if (ball.getTranslateY() <= 550) {
+                    Platform.runLater(() ->
+                    {
+                        ball.setTranslateY(ball.getTranslateY() - velocity * Main.UPDATE_IN);
+                        velocity = Math.max(velocity - 0.001 * Main.UPDATE_IN, -0.5);
+                    });
+                } else {
+                    ball.setTranslateY(545);
+                    velocity = 0;
+                }
+                double half = Main.STAGE_HEIGHT / 2;
+                double curPos = ball.getTranslateY();
+                if (curPos < half) {
+                    Platform.runLater(() -> ball.setTranslateY(ball.getTranslateY() - 1 * Main.UPDATE_IN * (curPos - half) / half));
+                    gameObjectsNodeAndController.forEach((K, V) ->
+                    {
+                        Platform.runLater(() -> K.setTranslateY(K.getTranslateY() - 1 * Main.UPDATE_IN * (curPos - half) / half));
+                        if (K.getTranslateY() > Main.STAGE_HEIGHT) {
+                            if (V instanceof Obstacle) {
+                                ((Obstacle) V).stopAllSubTasks();
+                            } else {
+                                V.stopCollisionDetector();
+                            }
+                            Platform.runLater(() ->
+                            {
+                                gameSpace.getChildren().remove(K);
+                                gameObjectsNodeAndController.remove(K);
+                            });
                         }
-                        Platform.runLater(() ->
-                        {
-                            gameSpace.getChildren().remove(K);
-                            gameObjectsNodeAndController.remove(K);
-                        });
-                    }
-                    upped.updateAndGet(v -> (v + (-1 * Main.UPDATE_IN * (curPos - half) / half)));
-                });
-            };
+                    });
+                }
+            } catch (Exception ignore) {
+
+            }
         }, 0, 1);
     }
     private double xOffset() {

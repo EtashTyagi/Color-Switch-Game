@@ -14,9 +14,9 @@ public class CrossObstacle extends Obstacle {
     @FXML private ArrayList<Rectangle> arms;
     @FXML private Rectangle firstOffset;
     private double thickness = 20;
-    private double radius = 150;
+    private double radius = 125;
     private double combined = 10;
-    private double rotateSpeed = 0.1;
+    private double rotateSpeed = 0.15;
 
     @FXML void initialize() {
         super.initialize();

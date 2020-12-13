@@ -19,7 +19,7 @@
         <RowConstraints maxHeight="557.9999847412109" minHeight="10.0" prefHeight="16.200000000000045" vgrow="SOMETIMES" />
     </rowConstraints>
    <children>
-      <Circle fx:id="pauseButton" fill="DODGERBLUE" radius="30.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
+      <Circle fx:id="pauseButton" fill="DODGERBLUE" radius="30.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="2" GridPane.halignment="RIGHT" onMouseClicked="#onPausePressed">
          <GridPane.margin>
             <Insets right="10.0" />
          </GridPane.margin></Circle>

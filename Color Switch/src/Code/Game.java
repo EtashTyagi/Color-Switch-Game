@@ -6,11 +6,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
 import javafx.util.Pair;
 
 import java.io.IOException;
@@ -18,13 +22,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public abstract class Game {
+    private Player player;
     private int curScore;
     private Ball ball;
+    private Stage mainStage;
     private static final double heightOffset = -100;
     private final HashMap<Node, Collidable> gameObjectsNodeAndController = new HashMap<>();
     private Pair<Node, Collidable> latestNodeAndController;
     private boolean hasEnded = false; // TODO End game on condition
     private Color passableColor;
+    private static final String objectDir = "";
     private static final String ballFile = "ball.fxml";
     private static final String starFile = "Star.fxml";
     private static final String switchFile = "Switch.fxml";
@@ -33,7 +40,33 @@ public abstract class Game {
                     "CrossObstacle.fxml", "LinesObstacle.fxml",
                     "SingleCircleObstacle.fxml", "SquareObstacle.fxml",
                     "TriangleObstacle.fxml"};
-
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+    public Player getPlayer() {
+        return this.player;
+    }
+    public void setMainStage(Stage primaryStage) {
+        this.mainStage = primaryStage;
+    }
+    public void onExit(MouseEvent event) {
+        if (event.getButton().equals(MouseButton.PRIMARY)) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Code/MainMenu.fxml"));
+            Parent mainMenu;
+            try {
+                mainMenu = loader.load();
+                MainMenu controller = loader.getController();
+                controller.setMainStage(mainStage);
+                mainStage.setScene(new Scene(mainMenu, Main.STAGE_WIDTH, Main.STAGE_HEIGHT));
+            } catch (Exception e) {
+                System.out.println("Resource Deleted!");
+                e.printStackTrace();
+            }
+        }
+    }
+    public Stage getMainStage() {
+        return mainStage;
+    }
     public Ball getBall() {
         return ball;
     }
@@ -43,7 +76,7 @@ public abstract class Game {
     void spawnBall(GridPane gameSpace, GridPane clickSpace) {
         FXMLLoader fxmlLoader = new FXMLLoader();
         try {
-            Circle ball = fxmlLoader.load(getClass().getResource(ballFile).openStream());
+            Circle ball = fxmlLoader.load(getClass().getResource(objectDir + ballFile).openStream());
             this.ball = fxmlLoader.getController();
             gameSpace.add(ball, 0, 0);
             GridPane.setHalignment(ball, HPos.LEFT);
@@ -70,7 +103,7 @@ public abstract class Game {
         FXMLLoader fxmlLoader = new FXMLLoader();
         Pane obstacle = null;
         try {
-            obstacle = fxmlLoader.load(getClass().getResource(obstacleFiles[randIndex]).openStream());
+            obstacle = fxmlLoader.load(getClass().getResource(objectDir + obstacleFiles[randIndex]).openStream());
         } catch (IOException e) {
             System.out.println("Resource Not Found " + obstacleFiles[randIndex]);
             e.printStackTrace();
@@ -86,7 +119,7 @@ public abstract class Game {
             GridPane.setValignment(finalObstacle, VPos.TOP);
             obstacleController.startCollisionDetector(this.ball, this::onCollisionDetected);
             gameObjectsNodeAndController.put(finalObstacle, obstacleController);
-            if (obstacleController instanceof  TriangleObstacle) {
+            if (obstacleController instanceof TriangleObstacle) {
                 ((TriangleObstacle) obstacleController).setPassableColor(passableColor);
             }
             finalObstacle.toBack();
@@ -96,12 +129,11 @@ public abstract class Game {
     HashMap<Node, Collidable> getGameObjectsNodeAndController() {
         return gameObjectsNodeAndController;
     }
-    //TODO: Spawn Switch Function [Switches Color of ball]
     void spawnSwitch(GridPane gameSpace) {
         FXMLLoader fxmlLoader = new FXMLLoader();
         Pane switchPane = null;
         try {
-            switchPane = fxmlLoader.load(getClass().getResource(switchFile).openStream());
+            switchPane = fxmlLoader.load(getClass().getResource(objectDir + switchFile).openStream());
         } catch (IOException e) {
             System.out.println("Resource Not Found " + switchFile);
             e.printStackTrace();
@@ -128,7 +160,7 @@ public abstract class Game {
         FXMLLoader fxmlLoader = new FXMLLoader();
         Pane starPane = null;
         try {
-            starPane = fxmlLoader.load(getClass().getResource(starFile).openStream());
+            starPane = fxmlLoader.load(getClass().getResource(objectDir + starFile).openStream());
         } catch (IOException e) {
             System.out.println("Resource Not Found " + starFile);
             e.printStackTrace();
@@ -148,15 +180,11 @@ public abstract class Game {
             latestNodeAndController = new Pair<>(finalStar, starController);
         });
     }
-    //TODO: On Pause Press Function
-    void onPausePress() {
-    }
-    public abstract void updateGameState();
-    public abstract void saveGameData();
+    public abstract void onSaveScore(MouseEvent e);
     public abstract void onCollisionDetected();
     public abstract void onStarCollected(Pair<Node, Star> nodeStarPair);
     public abstract void onSwitchCollected(Pair<Node, Switch> nodeSwitchPair);
-    @FXML abstract void initialize();
+    @FXML abstract void initialize() throws IOException;
     private Color getRandomColorExcept() {
         ArrayList<Color> newCols = new ArrayList<>();
         for (Color c : Main.GAME_COLORS) {
@@ -166,4 +194,10 @@ public abstract class Game {
         }
         return newCols.get(Main.RANDOM.nextInt(newCols.size()));
     }
+    void onSaveGame() {
+    }
+    private void buildFromSave(GridPane gameSpace) {
+
+    }
 }
+
