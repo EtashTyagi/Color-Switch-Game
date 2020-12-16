@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<GridPane fx:id="mainPane" alignment="TOP_CENTER" prefHeight="700.0" prefWidth="500.0" style="-fx-background-color: #1c1c1c;" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints maxHeight="164.6" minHeight="10.0" prefHeight="148.6" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="125.0" minHeight="125.0" prefHeight="125.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="125.0" minHeight="125.0" prefHeight="125.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="125.0" minHeight="125.0" prefHeight="125.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="557.9999847412109" minHeight="10.0" prefHeight="244.60000000000002" vgrow="SOMETIMES" />
+    </rowConstraints>
+   <children>
+      <Label text="Load / Start New" textAlignment="CENTER" textFill="#99f53c" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Comic Sans MS Bold" size="34.0" />
+         </font>
+      </Label>
+      <Button fx:id="newGameButton" mnemonicParsing="false" prefHeight="70.0" prefWidth="150.0" text="New Game" textFill="#547731" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Comic Sans MS Bold" size="23.0" />
+         </font></Button>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+         <children>
+            <Label prefHeight="36.0" prefWidth="147.0" text="Select game" textFill="#36bee8">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <ChoiceBox fx:id="options" prefHeight="31.0" prefWidth="166.0">
+            </ChoiceBox>
+         </children>
+      </HBox>
+      <Button fx:id="loadButton" mnemonicParsing="false" prefHeight="70.0" prefWidth="150.0" text="Load" textFill="#152cda" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Comic Sans MS Bold" size="24.0" />
+         </font></Button>
+   </children>
+</GridPane>

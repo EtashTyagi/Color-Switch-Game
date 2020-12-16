@@ -6,6 +6,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 <GridPane prefHeight="700.0" prefWidth="500.0" style="-fx-background-color: #1c1c1c;" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="160.0" minWidth="10.0" prefWidth="98.8" />
@@ -24,19 +25,25 @@
                 <Font name="Comic Sans MS Bold" size="47.0" />
             </font>
         </Label>
-        <TableView prefHeight="571.0" prefWidth="351.0" style="-fx-background-color: #1c1c1c" GridPane.columnSpan="3" GridPane.rowIndex="1">
+        <TableView fx:id="table" maxWidth="500.0" minHeight="351.0" minWidth="500.0" prefHeight="571.0" prefWidth="500.0" style="-fx-background-color: #1c1c1c; -fx-text-fill: white;" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
             <columns>
-                <TableColumn maxWidth="90.00000154972076" minWidth="-Infinity" prefWidth="90.00000154972076" style="-fx-font-size: 15px; -fx-label-text-fill: white;" text="Rank">
+                      <TableColumn editable="false" maxWidth="299.0" minWidth="298.0" prefWidth="298.0" resizable="false" style="-fx-font-size: 15px; -fx-allignment: CENTER; -fx-background-color: #1c1c1c; -fx-text-fill: white;" text="Name">
+                          <cellValueFactory><PropertyValueFactory property="name"/></cellValueFactory>
                 </TableColumn>
-                      <TableColumn maxWidth="327.80001068115234" minWidth="-1.0" prefWidth="321.1999740600586" style="-fx-font-size: 15px; -fx-text-fill: white;" text="Name">
+                <TableColumn editable="false" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" resizable="false" style="-fx-font-size: 15px; -fx-background-color: #1c1c1c; -fx-text-fill: white;" text="Rank">
+                    <cellValueFactory><PropertyValueFactory property="rank"/></cellValueFactory>
                 </TableColumn>
-                      <TableColumn maxWidth="331.9999694824219" minWidth="-1.0" prefWidth="89.199951171875" style="-fx-font-size: 15px; -fx-text-fill: white;" text="Score">
+                      <TableColumn editable="false" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" resizable="false" style="-fx-font-size: 15px; -fx-background-color: #1c1c1c; -fx-text-fill: white;" text="Score">
+                          <cellValueFactory><PropertyValueFactory property="score"/></cellValueFactory>
                 </TableColumn>
                   </columns>
                   <items>
                       <FXCollections fx:factory="observableArrayList">
                 </FXCollections>
                   </items>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
         </TableView>
     </children>
 </GridPane>

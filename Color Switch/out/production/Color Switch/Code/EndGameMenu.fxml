@@ -14,24 +14,21 @@
     <rowConstraints>
         <RowConstraints maxHeight="114.6" minHeight="112.2" prefHeight="112.2" vgrow="SOMETIMES" />
         <RowConstraints maxHeight="100.0" minHeight="100.0" prefHeight="100.0" vgrow="SOMETIMES" />
-        <RowConstraints maxHeight="100.0" minHeight="100.0" prefHeight="100.0" vgrow="SOMETIMES" />
-        <RowConstraints maxHeight="100.0" minHeight="100.0" prefHeight="100.0" vgrow="SOMETIMES" />
-        <RowConstraints maxHeight="100.0" minHeight="100.0" prefHeight="100.0" vgrow="SOMETIMES" />
-        <RowConstraints maxHeight="557.9999847412109" minHeight="10.0" prefHeight="16.200000000000045" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="125.0" minHeight="125.0" prefHeight="125.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="125.0" minHeight="125.0" prefHeight="125.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="125.0" minHeight="125.0" prefHeight="125.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="557.9999847412109" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
-        <Label fx:id="mainLabel" prefHeight="98.0" prefWidth="260.0" text="Game Over" textAlignment="CENTER" textFill="#83bd7f" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+        <Label fx:id="mainLabel" prefHeight="98.0" prefWidth="260.0" text="Game Over" textAlignment="CENTER" textFill="#f84343" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
             <font>
                 <Font name="Comic Sans MS" size="47.0" />
             </font>
             <padding>
                 <Insets left="10.0" />
             </padding></Label>
-        <Button fx:id="saveScoreButton" mnemonicParsing="false" prefHeight="58.0" prefWidth="136.0" text="Save Score" textAlignment="CENTER" textFill="#ff03d0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
-            <font>
-                <Font name="Comic Sans MS Bold" size="18.0" />
-            </font></Button>
-        <Button fx:id="restartButton" mnemonicParsing="false" prefHeight="58.0" prefWidth="136.0" text="Restart" textFill="#3d6911" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+        <Button fx:id="restartButton" mnemonicParsing="false" prefHeight="58.0" prefWidth="136.0" text="Restart" textFill="#14790d" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3">
             <font>
                 <Font name="Comic Sans MS Bold" size="18.0" />
             </font></Button>
@@ -42,7 +39,7 @@
         </Button>
         <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
             <children>
-                <Label fx:id="scoreLabel" maxHeight="98.0" maxWidth="235.0" minHeight="98.0" minWidth="88.0" prefHeight="98.0" prefWidth="88.0" text="Score:" textAlignment="CENTER" textFill="#83bd7f">
+                <Label fx:id="scoreLabel" maxHeight="98.0" maxWidth="235.0" minHeight="98.0" minWidth="88.0" prefHeight="98.0" prefWidth="88.0" text="Score:" textAlignment="CENTER" textFill="#15bd09">
                     <font>
                         <Font name="Comic Sans MS" size="24.0" />
                     </font>
@@ -50,7 +47,7 @@
                         <Insets left="10.0" />
                     </padding>
                 </Label>
-                <Label fx:id="score" layoutX="10.0" layoutY="10.0" prefHeight="98.0" prefWidth="129.0" text="0" textAlignment="CENTER" textFill="#83bd7f" HBox.hgrow="ALWAYS">
+                <Label fx:id="score" layoutX="10.0" layoutY="10.0" prefHeight="98.0" prefWidth="129.0" text="0" textAlignment="CENTER" textFill="#15bd09" HBox.hgrow="ALWAYS">
                     <font>
                         <Font name="Comic Sans MS" size="24.0" />
                     </font>
@@ -60,5 +57,19 @@
                 </Label>
             </children>
         </HBox>
+      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+         <children>
+            <Button fx:id="continueButton" mnemonicParsing="false" prefHeight="58.0" prefWidth="136.0" text="Continue" textFill="#8a4c12">
+               <font>
+                  <Font name="Comic Sans MS Bold" size="18.0" />
+               </font>
+            </Button>
+            <Label fx:id="continueCost" alignment="CENTER" prefHeight="60.0" prefWidth="83.0" text="-0" textAlignment="CENTER" textFill="#6f9f1b">
+               <font>
+                  <Font name="Comic Sans MS" size="22.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
     </children>
 </GridPane>
