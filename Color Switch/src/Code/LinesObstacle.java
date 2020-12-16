@@ -9,28 +9,39 @@ import javafx.scene.shape.Rectangle;
 import java.util.ArrayList;
 
 public class LinesObstacle extends Obstacle {
-    @FXML private HBox mainPane;
-    @FXML private ArrayList<Rectangle> parts;
-    private double thickness = 20;
-    private final double defaultLength = 125.61;
-    private double speed = 0.1;
+    @FXML transient private HBox mainPane;
+    @FXML transient private ArrayList<Rectangle> parts;
+    private static final double thickness = 20;
+    final static private double length = 125.61;
+    private double[] lengths;
+    private int zeroThColorIndex;
+    private double speed = 0.25;
 
     @FXML void initialize() {
         super.initialize();
-        mainPane.setMaxHeight(getHeight()); mainPane.setMaxWidth(getWidth());
         Platform.runLater(() ->
         {
+            lengths = new double[parts.size()];
+            mainPane.setMaxHeight(getHeight()); mainPane.setMaxWidth(getWidth());
             mainPane.setTranslateX(mainPane.getTranslateX() + xOffset());
             mainPane.setMaxHeight(getHeight()); mainPane.setMaxWidth(getWidth());
             for (int index = 0; index < parts.size() - 1; index++) {
                 parts.get(index).setFill(Main.GAME_COLORS[index]);
+                lengths[index] = length;
             }
+            zeroThColorIndex = 0;
             parts.get(parts.size()-1).setFill(Main.GAME_COLORS[0]);
         });
     }
-    //TODO: assign speed and difficulty based on this
     public void setDifficulty(double difficulty) {
-
+        if (difficulty <= 1 && difficulty >= 0) {
+            boolean positive = Main.RANDOM.nextBoolean();
+            if (positive) {
+                speed = Math.max(0.25 * difficulty, 0.25*0.5);
+            } else {
+                speed = Math.min(-0.25 * difficulty, -0.25*0.5);
+            }
+        }
     }
     @Override
     public boolean hasCollidedWithBall(Ball ball) {
@@ -48,19 +59,39 @@ public class LinesObstacle extends Obstacle {
     void doMovement() {
         Platform.runLater(() ->
         {
-            parts.get(0).setWidth(parts.get(0).getWidth() - speed* Main.UPDATE_IN);
-            parts.get(parts.size() - 1).setWidth(
-                    parts.get(parts.size() - 1).getWidth() + speed* Main.UPDATE_IN);
-            if (parts.get(0).getWidth() <= 0) {
-                parts.get(parts.size() - 1).setWidth(0);
-                parts.get(0).setFill(parts.get(1).getFill());
-                parts.get(0).setWidth(defaultLength);
-                Paint lastColor = parts.get(parts.size() - 1).getFill();
-                parts.get(parts.size() - 1).setFill(parts.get(0).getFill());
-                for (int index = 0; index < parts.size() - 2; index++) {
-                    parts.get(index).setFill(parts.get(index + 1).getFill());
+            if (speed > 0) {
+                lengths[0] -= speed * Main.UPDATE_IN;
+                lengths[lengths.length - 1] += speed * Main.UPDATE_IN;
+                if (lengths[0] <= 0) {
+                    lengths[lengths.length - 1] = 0;
+                    lengths[0] = length;
+                    zeroThColorIndex = (zeroThColorIndex + 1) % Main.GAME_COLORS.length;
+                    for (int index = 0; index < parts.size(); index++) {
+                        parts.get(index).setFill(Main.GAME_COLORS[(zeroThColorIndex + index) % Main.GAME_COLORS.length]);
+                        parts.get(index).setWidth(lengths[index]);
+                    }
+                } else {
+                    for (int index = 0; index < parts.size(); index++) {
+                        parts.get(index).setWidth(lengths[index]);
+                    }
                 }
-                parts.get(parts.size() - 2).setFill(lastColor);
+            } else {
+                lengths[0] -= speed * Main.UPDATE_IN;
+                lengths[lengths.length - 1] += speed * Main.UPDATE_IN;
+                if (lengths[lengths.length - 1] <= 0) {
+                    lengths[0] = 0;
+                    lengths[lengths.length - 1] = length;
+                    zeroThColorIndex = (((zeroThColorIndex - 1) % Main.GAME_COLORS.length) +
+                            Main.GAME_COLORS.length) % Main.GAME_COLORS.length;
+                    for (int index = 0; index < parts.size(); index++) {
+                        parts.get(index).setFill(Main.GAME_COLORS[(zeroThColorIndex + index) % Main.GAME_COLORS.length]);
+                        parts.get(index).setWidth(lengths[index]);
+                    }
+                } else {
+                    for (int index = 0; index < parts.size(); index++) {
+                        parts.get(index).setWidth(lengths[index]);
+                    }
+                }
             }
         });
     }
@@ -70,7 +101,18 @@ public class LinesObstacle extends Obstacle {
     }
     @Override
     public double getWidth() {
-        return (defaultLength-0.61)*parts.size();
+        return (length -0.61)*parts.size();
+    }
+    @Override
+    public void load(Obstacle obstacle) {
+        assert obstacle instanceof LinesObstacle;
+        LinesObstacle proper = (LinesObstacle) obstacle;
+        speed = proper.speed;
+        zeroThColorIndex = proper.zeroThColorIndex;
+        for (int index = 0; index < parts.size(); index++) {
+            parts.get(index).setFill(Main.GAME_COLORS[(zeroThColorIndex+index) % Main.GAME_COLORS.length]);
+            parts.get(index).setWidth(lengths[index]);
+        }
     }
     @Override
     double xOffset() {

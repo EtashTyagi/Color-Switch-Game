@@ -9,12 +9,13 @@ import javafx.scene.shape.Arc;
 import java.util.ArrayList;
 
 public class SingleCircleObstacle extends Obstacle {
-    @FXML private GridPane mainPane;
-    @FXML private Group circle;
-    @FXML private ArrayList<Arc> arcs;
-    private double thickness = 15;
-    private double radius = 83; //INNER
-    private double rotateSpeed = 0.1;
+    @FXML transient private GridPane mainPane;
+    @FXML transient private Group circle;
+    @FXML transient private ArrayList<Arc> arcs;
+    final static private double thickness = 15;
+    private static final double radius = 83;
+    private double rotate = 0;
+    private double rotateSpeed = 0.175;
 
     @FXML public void initialize() {
         super.initialize();
@@ -27,9 +28,15 @@ public class SingleCircleObstacle extends Obstacle {
             }
         });
     }
-    //TODO: assign speed and difficulty based on this
     public void setDifficulty(double difficulty) {
-
+        if (difficulty <= 1 && difficulty >= 0) {
+            boolean positive = Main.RANDOM.nextBoolean();
+            if (positive) {
+                rotateSpeed = Math.max(0.175 * difficulty, 0.175*0.5);
+            } else {
+                rotateSpeed = Math.min(-0.175 * difficulty, -0.175*0.5);
+            }
+        }
     }
     @Override
     public boolean hasCollidedWithBall(Ball ball) {
@@ -38,7 +45,8 @@ public class SingleCircleObstacle extends Obstacle {
     }
     @Override
     void doMovement() {
-        Platform.runLater(() -> circle.setRotate(circle.getRotate()+rotateSpeed* Main.UPDATE_IN));
+        rotate += rotateSpeed* Main.UPDATE_IN;
+        Platform.runLater(() -> circle.setRotate(rotate));
     }
     @Override
     public double getHeight() {
@@ -47,6 +55,13 @@ public class SingleCircleObstacle extends Obstacle {
     @Override
     public double getWidth() {
         return getHeight();
+    }
+    @Override
+    public void load(Obstacle obstacle) {
+        assert obstacle instanceof SingleCircleObstacle;
+        SingleCircleObstacle proper = (SingleCircleObstacle) obstacle;
+        rotateSpeed = proper.rotateSpeed;
+        rotate = proper.rotate;
     }
     @Override
     double xOffset() {

@@ -7,22 +7,26 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ScheduledFuture;
 
-public class Ball {
-    @FXML private Circle ball;
-    private final double radius = 10;
+public class Ball implements Serializable, Cloneable {
+    @FXML transient private Circle ball;
+    private final static double radius = 10;
     private static final double upVel = 0.3;
+    private double[] ballPos = new double[2];
+    private int colIndex;
     private double velocity;
-    private ScheduledFuture<?> mover;
+    transient private ScheduledFuture<?> mover;
 
     public void initialize() {
-        Platform.runLater(() ->
-        {
-            ball.setFill(Main.GAME_COLORS[Main.RANDOM.nextInt(Main.GAME_COLORS.length)]);
-            ball.setTranslateX(ball.getTranslateX() + xOffset());
-        });
+        colIndex = Main.RANDOM.nextInt(Main.GAME_COLORS.length);
+        ball.setFill(Main.GAME_COLORS[colIndex]);
+        ball.setTranslateX(ball.getTranslateX() + xOffset());
+        ballPos[0] = ball.getTranslateX();
+        ballPos[1] = ball.getTranslateY();
     }
     public double getCenterY() {
         return ball.getTranslateY() + radius;
@@ -32,6 +36,9 @@ public class Ball {
     }
     public double getRadius() {
         return radius;
+    }
+    public int getColIndex() {
+        return colIndex;
     }
     public void setColor(Color color) {
         boolean validColor = false;
@@ -50,39 +57,50 @@ public class Ball {
     public void goUp() {
         velocity = upVel;
     }
-    public void initializeMover(HashMap<Node, Collidable> gameObjectsNodeAndController, Pane gameSpace) {
+    public void initializeMover(ArrayList<SerializableNode> gameObjects, Pane gameSpace, Runnable onBallDown) {
         mover = Main.scheduleForExecution(() -> {
             try {
-                if (ball.getTranslateY() <= 550) {
+                if (ball.getTranslateY() <= 620) {
                     Platform.runLater(() ->
                     {
                         ball.setTranslateY(ball.getTranslateY() - velocity * Main.UPDATE_IN);
-                        velocity = Math.max(velocity - 0.001 * Main.UPDATE_IN, -0.5);
+                        double prevVel = velocity;
+                        velocity = Math.max(prevVel - 0.001 * Main.UPDATE_IN, -0.5);
+                        ballPos[0] = ball.getTranslateX();
+                        ballPos[1] = ball.getTranslateY();
                     });
                 } else {
-                    ball.setTranslateY(545);
-                    velocity = 0;
+                    Platform.runLater(onBallDown);
                 }
                 double half = Main.STAGE_HEIGHT / 2;
                 double curPos = ball.getTranslateY();
                 if (curPos < half) {
-                    Platform.runLater(() -> ball.setTranslateY(ball.getTranslateY() - 1 * Main.UPDATE_IN * (curPos - half) / half));
-                    gameObjectsNodeAndController.forEach((K, V) ->
+                    Platform.runLater(() ->
                     {
-                        Platform.runLater(() -> K.setTranslateY(K.getTranslateY() - 1 * Main.UPDATE_IN * (curPos - half) / half));
-                        if (K.getTranslateY() > Main.STAGE_HEIGHT) {
-                            if (V instanceof Obstacle) {
-                                ((Obstacle) V).stopAllSubTasks();
+                        ball.setTranslateY(ball.getTranslateY() - 1 * Main.UPDATE_IN * (curPos - half) / half);
+                        ballPos[0] = ball.getTranslateX();
+                        ballPos[1] = ball.getTranslateY();
+                    });
+                    ArrayList<SerializableNode> toRemoves = new ArrayList<>();
+                    gameObjects.forEach((gameObject) ->
+                    {
+                        Platform.runLater(() -> gameObject.setTranslateY(gameObject.getTranslateY() - 1 * Main.UPDATE_IN * (curPos - half) / half));
+                        if (gameObject.getTranslateY() > Main.STAGE_HEIGHT) {
+                            if (gameObject.getController() instanceof Obstacle) {
+                                ((Obstacle) gameObject.getController()).stopAllSubTasks();
                             } else {
-                                V.stopCollisionDetector();
+                                gameObject.getController().stopCollisionDetector();
                             }
                             Platform.runLater(() ->
                             {
-                                gameSpace.getChildren().remove(K);
-                                gameObjectsNodeAndController.remove(K);
+                                gameSpace.getChildren().remove(gameObject.getNode());
+                                toRemoves.add(gameObject);
                             });
                         }
                     });
+                    if (!toRemoves.isEmpty()) {
+                        gameObjects.removeAll(toRemoves);
+                    }
                 }
             } catch (Exception ignore) {
 
@@ -92,7 +110,22 @@ public class Ball {
     private double xOffset() {
         return Main.STAGE_WIDTH / 2 - radius;
     }
+    public void load(Ball savedBall) {
+        ballPos[0] = savedBall.ballPos[0];
+        ballPos[1] = savedBall.ballPos[1];
+        ball.setTranslateX(ballPos[0]);
+        ball.setTranslateY(ballPos[1]);
+        velocity = savedBall.velocity;
+        colIndex = savedBall.colIndex;
+        ball.setFill(Main.GAME_COLORS[colIndex]);
+    }
     public void stop() {
         mover.cancel(false);
+    }
+    @Override
+    protected Ball clone() throws CloneNotSupportedException {
+        Ball clone = (Ball) super.clone();
+        clone.ballPos = ballPos.clone();
+        return clone;
     }
 }

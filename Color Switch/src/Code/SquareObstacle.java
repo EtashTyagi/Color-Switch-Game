@@ -9,12 +9,13 @@ import javafx.scene.shape.Rectangle;
 import java.util.ArrayList;
 
 public class SquareObstacle extends Obstacle {
-    @FXML private GridPane mainPane;
-    @FXML private Group square;
-    @FXML private ArrayList<Rectangle> sides;
-    private double thickness = 20;
-    private double sideSize = 150;
-    private double rotateSpeed = 0.1;
+    @FXML transient private GridPane mainPane;
+    @FXML transient private Group square;
+    @FXML transient private ArrayList<Rectangle> sides;
+    final static private double thickness = 20;
+    private static final double sideSize = 150;
+    private double rotate = 0;
+    private double rotateSpeed = 0.175;
 
     @FXML void initialize() {
         super.initialize();
@@ -27,9 +28,15 @@ public class SquareObstacle extends Obstacle {
             }
         });
     }
-    //TODO: assign speed and difficulty based on this
     public void setDifficulty(double difficulty) {
-
+        if (difficulty <= 1 && difficulty >= 0) {
+            boolean positive = Main.RANDOM.nextBoolean();
+            if (positive) {
+                rotateSpeed = Math.max(0.175 * difficulty, 0.5*0.175);
+            } else {
+                rotateSpeed = Math.min(-0.175 * difficulty, -0.5*0.175);
+            }
+        }
     }
     @Override
     public boolean hasCollidedWithBall(Ball ball) {
@@ -46,7 +53,8 @@ public class SquareObstacle extends Obstacle {
     }
     @Override
     void doMovement() {
-        Platform.runLater(() -> square.setRotate(square.getRotate() + rotateSpeed * Main.UPDATE_IN));
+        rotate += rotateSpeed * Main.UPDATE_IN;
+        Platform.runLater(() -> square.setRotate(rotate));
     }
     @Override
     public double getHeight() {
@@ -55,6 +63,13 @@ public class SquareObstacle extends Obstacle {
     @Override
     public double getWidth() {
         return getHeight();
+    }
+    @Override
+    public void load(Obstacle obstacle) {
+        assert obstacle instanceof SquareObstacle;
+        SquareObstacle proper = (SquareObstacle) obstacle;
+        rotateSpeed = proper.rotateSpeed;
+        rotate = proper.rotate;
     }
     @Override
     double xOffset() {

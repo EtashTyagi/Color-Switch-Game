@@ -9,16 +9,17 @@ import javafx.scene.shape.Arc;
 import java.util.ArrayList;
 
 public class ConcentricTripleCircleObstacle extends Obstacle {
-    @FXML private GridPane mainPane;
-    @FXML private Group outerCircle;
-    @FXML private Group middleCircle;
-    @FXML private Group innerCircle;
-    @FXML private ArrayList<Arc> outerArcs;
-    @FXML private ArrayList<Arc> middleArcs;
-    @FXML private ArrayList<Arc> innerArcs;
-    private double thickness = 17;
-    private double radius = 82;
-    private double rotateSpeed = 0.1;
+    @FXML transient private GridPane mainPane;
+    @FXML transient private Group outerCircle;
+    @FXML transient private Group middleCircle;
+    @FXML transient private Group innerCircle;
+    @FXML transient private ArrayList<Arc> outerArcs;
+    @FXML transient private ArrayList<Arc> middleArcs;
+    @FXML transient private ArrayList<Arc> innerArcs;
+    private static final double thickness = 17;
+    private static final double radius = 82;
+    private double rotated = 0;
+    private double rotateSpeed = 0.125;
 
     @FXML void initialize() {
         super.initialize();
@@ -36,11 +37,16 @@ public class ConcentricTripleCircleObstacle extends Obstacle {
             middleArcs.get(3).setFill(Main.GAME_COLORS[2]);
         });
     }
-    //TODO: assign speed and difficulty based on this
     public void setDifficulty(double difficulty) {
-
+        if (difficulty <= 1 && difficulty >= 0) {
+            boolean positive = Main.RANDOM.nextBoolean();
+            if (positive) {
+                rotateSpeed = Math.max(0.125 * difficulty, 0.125*0.5);
+            } else {
+                rotateSpeed = Math.min(-0.125 * difficulty, -0.125*0.5);
+            }
+        }
     }
-    //TODO: Check For Collision
     @Override
     public boolean hasCollidedWithBall(Ball ball) {
         boolean outer = CollisionDetector.ballAndArcedCircle(outerArcs, ball, thickness,
@@ -61,9 +67,10 @@ public class ConcentricTripleCircleObstacle extends Obstacle {
     void doMovement() {
         Platform.runLater(() ->
         {
-            outerCircle.setRotate(outerCircle.getRotate()+rotateSpeed* Main.UPDATE_IN);
-            middleCircle.setRotate(middleCircle.getRotate()-rotateSpeed* Main.UPDATE_IN);
-            innerCircle.setRotate(innerCircle.getRotate()+rotateSpeed* Main.UPDATE_IN);
+            rotated += rotateSpeed * Main.UPDATE_IN;
+            outerCircle.setRotate(rotated);
+            middleCircle.setRotate(-rotated);
+            innerCircle.setRotate(rotated);
         });
     }
     @Override
@@ -73,6 +80,13 @@ public class ConcentricTripleCircleObstacle extends Obstacle {
     @Override
     public double getWidth() {
         return getHeight();
+    }
+    @Override
+    public void load(Obstacle obstacle) {
+        assert obstacle instanceof ConcentricTripleCircleObstacle;
+        ConcentricTripleCircleObstacle proper = (ConcentricTripleCircleObstacle) obstacle;
+        rotateSpeed = proper.rotateSpeed;
+        rotated = proper.rotated;
     }
     @Override
     double xOffset() {

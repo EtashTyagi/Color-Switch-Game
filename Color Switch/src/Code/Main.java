@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import java.io.IOException;
 import java.util.Random;
 import java.util.concurrent.Executors;
@@ -13,8 +14,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-// DONE MAIN
-// TODO CAPTURE CLICK ALL OVER THE STAGE
+
 public class Main extends Application {
     final public static double STAGE_WIDTH = 500;
     final public static double STAGE_HEIGHT = 700;
@@ -33,11 +33,15 @@ public class Main extends Application {
         launch(args);
     }
     private void openMainMenu(Stage primaryStage) throws IOException {
+        primaryStage.setOnCloseRequest((e) ->
+        {
+            System.exit(0);
+        });
         FXMLLoader loader = new FXMLLoader(getClass().getResource("MainMenu.fxml"));
         Parent mainMenu = loader.load();
         MainMenu controller = loader.getController();
         controller.setMainStage(primaryStage);
-        //primaryStage.initStyle(StageStyle.UNDECORATED); //REMOVE TITLE BAR
+        primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setTitle("Colour Switch");
         /*
         AtomicReference<Double> xOffset = new AtomicReference<>((double) 0);

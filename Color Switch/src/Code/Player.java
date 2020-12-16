@@ -1,18 +1,38 @@
 package Code;
 
+import javafx.application.Platform;
+import javafx.scene.control.TableView;
+
 import java.io.*;
 import java.util.ArrayList;
 
-public class Player implements Serializable {
-    private ArrayList<Game> savedEndlessGames; // Also Timed Endless
+public class Player implements Serializable, Cloneable {
+    private ArrayList<Game> savedEndlessGames = new ArrayList<>();
+    private ArrayList<String> gameNames = new ArrayList<>();
     private int endlessHighScore;
-    private int timedHighScore; // TODO IMPLEMENT OR REMOVE
     private String password;
     private String userName;
 
     public Player(String userName, String password) {
         this.userName = userName;
         this.password = password;
+    }
+    public void saveGame(Game toSave) {
+        savedEndlessGames.add(toSave);
+        save();
+    }
+    public ArrayList<String> getSavedEndlessGames() {
+        ArrayList<String> ans = new ArrayList<>();
+        int index = 0;
+        for (Game game : savedEndlessGames) {
+            ans.add("Save("+index+") " + "[score="+game.getCurScore()+"]");
+            index++;
+        }
+        return ans;
+    }
+    public Game getSaveGameNo(int index) {
+        assert index <= savedEndlessGames.size() && index >= 0;
+        return savedEndlessGames.get(index);
     }
     public void setEndlessHighScore(int score) {
         this.endlessHighScore = score;
@@ -25,6 +45,7 @@ public class Player implements Serializable {
     }
     public void save() {
         try {
+            PlayerFactory.savePlayerHighScore(userName, endlessHighScore);
             FileOutputStream fileOut =
                     new FileOutputStream("Save Files/Players/" +userName+ ".ser");
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
@@ -46,5 +67,9 @@ public class Player implements Serializable {
         } catch (IOException | ClassNotFoundException ignore) {
             return null; // This Should Not Happen
         }
+    }
+    @Override
+    protected Player clone() throws CloneNotSupportedException {
+        return (Player) super.clone();
     }
 }

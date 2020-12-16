@@ -7,37 +7,49 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.media.AudioClip;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.util.Pair;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ThreadPoolExecutor;
 
 public class EndlessGame extends Game {
-    @FXML private Circle pauseButton;
-    @FXML private Label scoreLabel;
-    @FXML private GridPane gamePane;
-    @FXML private GridPane mainPane;
-    private Scene pauseMenu;
-    private Scene gameOver;
-    private ScheduledFuture<?> futureObjectMaker;
-    private final Runnable gameObjectMaker = () -> {
-        if (getLatestNodeAndController() == null || getLatestNodeAndController().getKey().getTranslateY() > -50) {
-            if (getLatestNodeAndController() != null &&
-                    getLatestNodeAndController().getValue() instanceof Obstacle) {
-                spawnStar(gamePane);
-            } else if (getLatestNodeAndController() != null) {
-                if (!(getLatestNodeAndController().getValue() instanceof Switch) && Main.RANDOM.nextBoolean()) {
+    @FXML transient private Circle pauseButton;
+    @FXML transient private Label scoreLabel;
+    @FXML transient private GridPane gamePane;
+    @FXML transient private GridPane mainPane;
+    @FXML transient private Label hint;
+    transient private final ImagePattern pauseUnEntered = new ImagePattern(new Image("file:Resources\\Images\\StopUE.png"));
+    transient private final ImagePattern pauseEntered = new ImagePattern(new Image("file:Resources\\Images\\StopE.png"));
+    transient private final AudioClip buttonESound = new AudioClip(new File("Resources\\Sound Effects\\button.wav").toURI().toString());
+    transient private final AudioClip clickSound = new AudioClip(new File("Resources\\Sound Effects\\achat.wav").toURI().toString());
+    transient private final AudioClip errorSound = new AudioClip(new File("Resources\\Sound Effects\\error.wav").toURI().toString());
+    private final AudioClip deadSound = new AudioClip(new File("Resources\\Sound Effects\\dead.wav").toURI().toString());
+    private final AudioClip starSound = new AudioClip(new File("Resources\\Sound Effects\\star.wav").toURI().toString());
+    private final AudioClip switchSound = new AudioClip(new File("Resources\\Sound Effects\\colorswitch.wav").toURI().toString());
+    transient private Scene pauseMenu;
+    transient private Scene gameOver;
+    transient private ScheduledFuture<?> futureObjectMaker;
+    transient private final Runnable gameObjectMaker = () -> {
+        if (getLatestInserted() == null || getLatestInserted().getTranslateY() > -50) {
+            if (getLatestInserted() != null) {
+                if (getLatestInserted().getController() instanceof Obstacle) {
+                    spawnStar(gamePane);
+                } else if (!(getLatestInserted().getController() instanceof Switch) && (Main.RANDOM.nextBoolean() || Main.RANDOM.nextBoolean())) {
                     spawnSwitch(gamePane);
                 } else {
                     spawnRandomObstacle(gamePane);
                 }
             } else {
                 spawnRandomObstacle(gamePane);
-                Platform.runLater(() -> getLatestNodeAndController().getKey().setTranslateY(0));
+                Platform.runLater(() -> getLatestInserted().setTranslateY(0));
             }
         }
     };
@@ -47,31 +59,41 @@ public class EndlessGame extends Game {
         gameOver = new Scene(FXMLLoader.load(getClass().getResource("EndGameMenu.fxml")), Main.STAGE_WIDTH, Main.STAGE_HEIGHT);
         scoreLabel.toFront();
         pauseButton.toFront();
-        spawnBall(gamePane, mainPane);
-        futureObjectMaker = Main.scheduleForExecution(gameObjectMaker, 0, 5);
+        pauseButton.setFill(pauseUnEntered);
+        pauseButton.setOnMouseEntered((event) ->
+        {
+            pauseButton.setFill(pauseEntered);
+            buttonESound.play();
+        });
+        pauseButton.setOnMouseExited((event) ->
+                pauseButton.setFill(pauseUnEntered));
     }
-
     @FXML void onPausePressed() {
+        hint.setVisible(false);
+        stopAllCollisionAndSpawn();
         Scene gameScene = getMainStage().getScene();
-        futureObjectMaker.cancel(false);
-        getBall().stop();
-        getGameObjectsNodeAndController().forEach((K,V) ->
-                V.stopCollisionDetector());
-
         Button backButton = (Button) pauseMenu.lookup("#resumeButton");
-        backButton.setOnMouseClicked((e) -> {
-            futureObjectMaker = Main.scheduleForExecution(gameObjectMaker, 0, 1);
-            getMainStage().setScene(gameScene) ;
-            getGameObjectsNodeAndController().forEach((K,V) -> {
-                if (V instanceof Obstacle) {
-                    V.startCollisionDetector(getBall(), this::onCollisionDetected);
-                } else if (V instanceof Star) {
-                    V.startCollisionDetector(getBall(), () -> onStarCollected(new Pair<>(K, (Star) V)));
-                } else {
-                    V.startCollisionDetector(getBall(), () -> onSwitchCollected(new Pair<>(K, (Switch) V)));
-                }
-            });
-            getBall().initializeMover(getGameObjectsNodeAndController(), gamePane);
+        backButton.setOnMouseClicked((e) ->
+        {
+            if (e.getButton().equals(MouseButton.PRIMARY)) {
+                getMainStage().setScene(gameScene);
+                ((Button) e.getSource()).setDisable(false);
+                gamePane.setOnMouseClicked((event) ->
+                {
+                    if (event.getButton().equals(MouseButton.PRIMARY)) {
+                        startAllCollisionAndSpawn();
+                        gamePane.setOnMouseClicked((event1 -> {}));
+                    }
+                });
+            }
+        });
+
+        Button saveButton = (Button) pauseMenu.lookup("#saveButton");
+        saveButton.setOnMouseClicked((e) -> {
+            if (e.getButton().equals(MouseButton.PRIMARY)) {
+                onSaveGame();
+                ((Button) e.getSource()).setDisable(true);
+            }
         });
 
         Label curScoreLabel = (Label) pauseMenu.lookup("#curScore");
@@ -83,65 +105,142 @@ public class EndlessGame extends Game {
 
         getMainStage().setScene(pauseMenu);
     }
-    @Override
-    public void onSaveScore(MouseEvent event) {
-        if (event.getButton().equals(MouseButton.PRIMARY)) {
-            getPlayer().setEndlessHighScore(Math.max(getPlayer().getEndlessHighScore(), Integer.parseInt(scoreLabel.getText())));
-            getPlayer().save();
+    private void startAllCollisionAndSpawn() {
+        futureObjectMaker = Main.scheduleForExecution(gameObjectMaker, 0, 2);
+        for (SerializableNode node : getGameNodes()) {
+            if (node.getController() instanceof Obstacle) {
+                node.getController().startCollisionDetector(getBall(), this::onCollisionDetected);
+            } else if (node.getController() instanceof Star) {
+                node.getController().startCollisionDetector(getBall(), () -> onStarCollected(node));
+            } else if (node.getController() instanceof Switch) {
+                node.getController().startCollisionDetector(getBall(), () -> onSwitchCollected(node));
+            } else {
+                System.out.println("This should not happen");
+            }
+        }
+        getBall().initializeMover(getGameNodes(), gamePane, this::onCollisionDetected);
+    }
+    public void onSaveGame() {
+        try {
+            getPlayer().saveGame(this.clone());
+        } catch (Exception i) {
+            i.printStackTrace();
+        }
+    }
+    public void load(Game toLoad) {
+        spawnBall(gamePane, mainPane);
+        scoreLabel.setTextFill(getBall().getColor());
+        stopAllCollisionAndSpawn();
+        if (toLoad != null) {
+            load(gamePane, mainPane, toLoad);
+        }
+        gamePane.setOnMouseClicked((event) ->
+        {
+            if (event.getButton().equals(MouseButton.PRIMARY)) {
+                hint.setVisible(false);
+                startAllCollisionAndSpawn();
+            }
+            gamePane.setOnMouseClicked(e -> {});
+        });
+        scoreLabel.setText(Integer.toString(getCurScore()));
+    }
+    private void stopAllCollisionAndSpawn() {
+        try {
+            futureObjectMaker.cancel(true);
+        } catch (NullPointerException ignore) {
+        }
+        getBall().stop();
+        for (SerializableNode node : getGameNodes()) {
+            node.getController().stopCollisionDetector();
         }
     }
     @Override
     public void onCollisionDetected() {
-        futureObjectMaker.cancel(true);
-        getBall().stop();
-        getGameObjectsNodeAndController().forEach((K, V) ->
-        Platform.runLater(() -> {
-            if (V instanceof Obstacle) {
-                ((Obstacle) V).stopAllSubTasks();
-            } else {
-                V.stopCollisionDetector();
-            }
-            gamePane.getChildren().remove(K);
-            getGameObjectsNodeAndController().remove(K);
-        }));
-
+        Scene gameScene = getMainStage().getScene();
+        stopAllCollisionAndSpawn();
+        deadSound.play();
         Button restartButton = (Button) gameOver.lookup("#restartButton");
         restartButton.setOnMouseClicked((e) -> {
+            onExit(e);
             FXMLLoader loader = new FXMLLoader(getClass().getResource("EndlessGame.fxml"));
             try {
                 Scene endlessGameScene = new Scene(loader.load(), Main.STAGE_WIDTH, Main.STAGE_HEIGHT);
-                ((Game) loader.getController()).setMainStage(getMainStage());
-                ((Game) loader.getController()).setPlayer(getPlayer());
+                ((EndlessGame) loader.getController()).setMainStage(getMainStage());
+                ((EndlessGame) loader.getController()).setPlayer(getPlayer());
                 getMainStage().setScene(endlessGameScene);
+                ((EndlessGame) loader.getController()).load(null);
             } catch (Exception err) {
                 System.out.println("Resource Deleted!");
                 err.printStackTrace();
             }
         });
 
-        Button saveButton = (Button) gameOver.lookup("#saveScoreButton");
-        saveButton.setOnMouseClicked(this::onSaveScore);
-
         Label curScoreLabel = (Label) gameOver.lookup("#score");
-        curScoreLabel.setText(scoreLabel.getText());
+        curScoreLabel.setText(getCurScore()+"");
+
+        Label continueCost = (Label) gameOver.lookup("#continueCost");
+        continueCost.setText("-" + Integer.toString(getCurScore()/2));
+
+        Button continueButton = (Button) gameOver.lookup("#continueButton");
+        continueButton.setOnMouseClicked(event ->
+        {
+            setCurScore(getCurScore() - getCurScore()/2);
+            scoreLabel.setText(getCurScore()+"");
+            if (event.getButton().equals(MouseButton.PRIMARY)) {
+                getMainStage().setScene(gameScene);
+                gamePane.setOnMouseClicked((mouseEvent) ->
+                {
+                    if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                        startAllCollisionAndSpawn();
+                        gamePane.setOnMouseClicked(event1 -> {});
+                    }
+                });
+            }
+        });
 
         Button exitButton = (Button)  gameOver.lookup("#exitButton");
-        exitButton.setOnMouseClicked(this::onExit);
-
+        exitButton.setOnMouseClicked((this::onExit));
         getMainStage().setScene(gameOver);
+        try {
+            Thread.sleep(Main.UPDATE_IN*45);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     @Override
-    public void onStarCollected(Pair<Node, Star> nodeStarPair) {
-        nodeStarPair.getValue().stopCollisionDetector();
-        getGameObjectsNodeAndController().remove(nodeStarPair.getKey());
-        gamePane.getChildren().remove(nodeStarPair.getKey());
-        scoreLabel.setText(Integer.toString(Integer.parseInt(scoreLabel.getText()) + 1));
+    public void onStarCollected(SerializableNode star) {
+        setCurScore(getCurScore()+1);
+        star.getController().stopCollisionDetector();
+        getGameNodes().remove(star);
+        gamePane.getChildren().remove(star.getNode());
+        scoreLabel.setText(Integer.toString(getCurScore()));
+        starSound.play();
     }
     @Override
-    public void onSwitchCollected(Pair<Node, Switch> nodeSwitchPair) {
-        nodeSwitchPair.getValue().stopCollisionDetector();
-        getBall().setColor(nodeSwitchPair.getValue().getNewColor());
-        getGameObjectsNodeAndController().remove(nodeSwitchPair.getKey());
-        gamePane.getChildren().remove(nodeSwitchPair.getKey());
+    public void onSwitchCollected(SerializableNode colorSwitch) {
+        colorSwitch.getController().stopCollisionDetector();
+        getBall().setColor(((Switch) colorSwitch.getController()).getNewColor());
+        scoreLabel.setTextFill(((Switch) colorSwitch.getController()).getNewColor());
+        getGameNodes().remove(colorSwitch);
+        gamePane.getChildren().remove(colorSwitch.getNode());
+        switchSound.play();
+    }
+    @Override
+    public void onSaveScore(MouseEvent event) {
+        if (event.getButton().equals(MouseButton.PRIMARY)) {
+            getPlayer().setEndlessHighScore(Math.max(getPlayer().getEndlessHighScore(), getCurScore()));
+            getPlayer().save();
+        }
+    }
+    @Override
+    public void onExit(MouseEvent event) {
+        if (event.getButton().equals(MouseButton.PRIMARY)) {
+            super.onExit(event);
+            onSaveScore(event);
+            for (SerializableNode node : getGameNodes()) {
+                gamePane.getChildren().remove(node.getNode());
+            }
+            getGameNodes().clear();
+        }
     }
 }

@@ -3,19 +3,26 @@ package Code;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 
+import java.io.Serializable;
 import java.util.concurrent.ScheduledFuture;
 
-//TODO: Check Error [Difficulty Must Be 0-1]
 public abstract class Obstacle implements Collidable {
-    private ScheduledFuture<?> mover;
-    private ScheduledFuture<?> collisionDetector;
+    transient volatile private ScheduledFuture<?> mover;
+    transient volatile private ScheduledFuture<?> collisionDetector;
 
     @FXML void initialize() {
         Platform.runLater(() -> mover = Main.scheduleForExecution(this::doMovement, 0, 1));
     }
+    abstract void setDifficulty(double value);
     abstract void doMovement();
     abstract public double getHeight();
     abstract public double getWidth();
+    @Override
+    public void load(Collidable collidable) {
+        assert collidable instanceof Obstacle;
+        load((Obstacle) collidable);
+    }
+    abstract public void load(Obstacle obstacle);
     abstract double xOffset();
     public final void stopAllSubTasks() {
         mover.cancel(false);
@@ -36,7 +43,6 @@ public abstract class Obstacle implements Collidable {
         try {
             collisionDetector.cancel(false);
         } catch (Exception ignore) {
-
         }
     }
 }

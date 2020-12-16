@@ -10,10 +10,11 @@ import java.util.ArrayList;
 import java.util.concurrent.ScheduledFuture;
 
 public class Switch implements Collidable {
-    @FXML private GridPane mainPane;
-    @FXML private ArrayList<Arc> arcs;
-    private ScheduledFuture<?> collisionDetector;
-    private Color newColor;
+    @FXML transient private GridPane mainPane;
+    @FXML transient private ArrayList<Arc> arcs;
+    transient private ScheduledFuture<?> collisionDetector;
+    transient private Color newColor;
+    private int nextColIndex;
 
     @FXML private void initialize() {
         Platform.runLater(() -> {
@@ -27,6 +28,11 @@ public class Switch implements Collidable {
         return newColor;
     }
     public void setNewColor(Color color) {
+        for (int index = 0; index < Main.GAME_COLORS.length; index++) {
+            if (Main.GAME_COLORS[index].equals(color)) {
+                nextColIndex = index;
+            }
+        }
         this.newColor = color;
     }
     @Override
@@ -52,6 +58,12 @@ public class Switch implements Collidable {
         } catch (Exception ignore) {
 
         }
+    }
+    @Override
+    public void load(Collidable collidable) {
+        assert collidable instanceof Switch;
+        nextColIndex = ((Switch) collidable).nextColIndex;
+        setNewColor(Main.GAME_COLORS[nextColIndex]);
     }
     public double getHeight() {
         return 25;

@@ -10,14 +10,16 @@ import javafx.scene.shape.Rectangle;
 import java.util.ArrayList;
 
 public class TriangleObstacle extends Obstacle {
-    @FXML private GridPane mainPane;
-    @FXML private Group triangle;
-    @FXML private ArrayList<Rectangle> sides;
+    @FXML transient private GridPane mainPane;
+    @FXML transient private Group triangle;
+    @FXML transient private ArrayList<Rectangle> sides;
+    final static private double thickness = 15;
+    private static final double sideSize = 200;
+    private static final double diam = 231;
     private int unPassable = 3;
-    private double thickness = 15;
-    private double sideSize = 200;
-    private double rotateSpeed = 0.1;
-    private double diam = 231;
+    private double rotated = 0;
+    private double rotateSpeed = 0.175;
+
 
     @FXML void initialize() {
         super.initialize();
@@ -32,7 +34,6 @@ public class TriangleObstacle extends Obstacle {
         });
     }
     public void setPassableColor(Color passableColor) {
-        int swap = Main.RANDOM.nextInt(sides.size());
         Platform.runLater(() ->
         {
             for (Rectangle side : sides) {
@@ -40,16 +41,19 @@ public class TriangleObstacle extends Obstacle {
                     return;
                 }
             }
-            sides.get(swap).setFill(passableColor);
-            unPassable = swap;
+            sides.get(0).setFill(passableColor);
+            unPassable = 0;
         });
     }
-    public int getUnPassableIndex() {
-        return unPassable;
-    }
-    //TODO: assign speed and difficulty based on this
     public void setDifficulty(double difficulty) {
-
+        if (difficulty <= 1 && difficulty >= 0) {
+            boolean positive = Main.RANDOM.nextBoolean();
+            if (positive) {
+                rotateSpeed = Math.max(0.175 * difficulty, 0.175*0.5);
+            } else {
+                rotateSpeed = Math.min(-0.175 * difficulty, -0.175*0.5);
+            }
+        }
     }
     @Override
     public boolean hasCollidedWithBall(Ball ball) {
@@ -66,7 +70,11 @@ public class TriangleObstacle extends Obstacle {
     }
     @Override
     void doMovement() {
-        Platform.runLater(() -> triangle.setRotate(triangle.getRotate() + rotateSpeed * Main.UPDATE_IN));
+        Platform.runLater(() ->
+        {
+            rotated += rotateSpeed * Main.UPDATE_IN;
+            triangle.setRotate(rotated);
+        });
     }
     @Override
     public double getHeight() {
@@ -75,6 +83,17 @@ public class TriangleObstacle extends Obstacle {
     @Override
     public double getWidth() {
         return sideSize;
+    }
+    @Override
+    public void load(Obstacle obstacle) {
+        assert obstacle instanceof TriangleObstacle;
+        TriangleObstacle proper = (TriangleObstacle) obstacle;
+        rotateSpeed = proper.rotateSpeed;
+        rotated = proper.rotated;
+        unPassable = proper.unPassable;
+        if (unPassable == 0) {
+            sides.get(0).setFill(Main.GAME_COLORS[3]);
+        }
     }
     @Override
     double xOffset() {

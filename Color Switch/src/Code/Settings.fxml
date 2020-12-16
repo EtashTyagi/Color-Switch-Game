@@ -18,9 +18,9 @@
             <RowConstraints maxHeight="289.4000152587891" minHeight="5.599999999999994" prefHeight="33.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="322.59996948242195" minHeight="5.599999999999994" prefHeight="47.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="322.59996948242195" minHeight="2.3999999999999773" prefHeight="77.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="525.6000152587891" minHeight="10.0" prefHeight="53.19999999999999" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="525.6000152587891" minHeight="10.0" prefHeight="42.39999999999998" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="525.6000152587891" minHeight="0.0" prefHeight="220.40000000000003" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="525.6000152587891" minHeight="10.0" prefHeight="68.60000000000002" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="525.6000152587891" minHeight="10.0" prefHeight="193.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="525.6000152587891" minHeight="0.0" prefHeight="55.80003051757808" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
               <Circle fx:id="backButton" fill="darkgrey" radius="25.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
@@ -33,17 +33,6 @@
          <font>
             <Font name="System Bold" size="15.0" />
          </font></Button>
-      <HBox alignment="CENTER" prefHeight="66.0" prefWidth="193.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
-         <children>
-                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="113.0" text="Sound" textAlignment="CENTER" textFill="lightskyblue">
-                          <font>
-                              <Font name="System Bold" size="20" />
-                          </font>
-                      </Label>
-                      <Slider prefHeight="14.0" prefWidth="187.0">
-                </Slider>
-         </children>
-      </HBox>
       <Label alignment="CENTER" contentDisplay="CENTER" layoutX="159.0" layoutY="24.0" prefHeight="71.0" prefWidth="293.0" text=" Local User Login" textAlignment="CENTER" textFill="#e4ed39" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
          <font>
             <Font name="System Bold" size="36.0" />
@@ -74,7 +63,7 @@
             <Font name="System Bold" size="36.0" />
          </font>
       </Label>
-      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
+      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
          <children>
             <HBox alignment="TOP_CENTER" prefHeight="35.0" prefWidth="315.0">
                <children>

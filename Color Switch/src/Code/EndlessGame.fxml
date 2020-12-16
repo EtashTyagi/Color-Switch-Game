@@ -3,7 +3,6 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
@@ -19,11 +18,11 @@
         <RowConstraints maxHeight="557.9999847412109" minHeight="10.0" prefHeight="16.200000000000045" vgrow="SOMETIMES" />
     </rowConstraints>
    <children>
-      <Circle fx:id="pauseButton" fill="DODGERBLUE" radius="30.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="2" GridPane.halignment="RIGHT" onMouseClicked="#onPausePressed">
+      <Circle fx:id="pauseButton" fill="DODGERBLUE" onMouseClicked="#onPausePressed" radius="30.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
          <GridPane.margin>
             <Insets right="10.0" />
          </GridPane.margin></Circle>
-       <Label fx:id="scoreLabel" text="0" textFill="#83bd7f">
+       <Label fx:id="scoreLabel" prefHeight="98.0" prefWidth="156.0" text="0" textFill="#83bd7f" GridPane.columnSpan="2">
          <font>
             <Font name="Comic Sans MS" size="70.0" />
          </font>
@@ -38,6 +37,13 @@
         <rowConstraints>
           <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
         </rowConstraints>
+         <children>
+            <Label fx:id="hint" prefHeight="235.0" prefWidth="391.0" text="Left Click To Jump" textFill="#515151" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <font>
+                  <Font name="Comic Sans MS Bold Italic" size="40.0" />
+               </font>
+            </Label>
+         </children>
       </GridPane>
    </children>
 </GridPane>
