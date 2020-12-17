@@ -43,7 +43,6 @@ public abstract class Game implements Serializable, Cloneable {
                     "SingleCircleObstacle.fxml", "SquareObstacle.fxml",
                     "TriangleObstacle.fxml"};
 
-
     public void setPlayer(Player player) {
         this.player = player;
     }
@@ -98,25 +97,26 @@ public abstract class Game implements Serializable, Cloneable {
         return gameNodes.size() == 0 ? (null) : (gameNodes.get(gameNodes.size() - 1));
     }
     void spawnBall(GridPane gameSpace, GridPane clickSpace) {
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(objectDir + ballFile));
-                Circle ball = fxmlLoader.load();
-                this.ball = fxmlLoader.getController();
-                gameSpace.add(ball, 0, 0);
-                GridPane.setHalignment(ball, HPos.LEFT);
-                GridPane.setValignment(ball, VPos.TOP);
-                ball.setTranslateY(500);
-                clickSpace.setOnMousePressed((event) ->
-                {
-                    if (event.getButton().equals(MouseButton.PRIMARY)) {
-                        this.ball.goUp();
-                    }
-                });
-                this.ball.initializeMover(gameNodes, gameSpace, this::onCollisionDetected);
-                passableColor = this.ball.getColor();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(objectDir + ballFile));
+            Circle ball = fxmlLoader.load();
+            this.ball = fxmlLoader.getController();
+            gameSpace.add(ball, 0, 0);
+            GridPane.setHalignment(ball, HPos.LEFT);
+            GridPane.setValignment(ball, VPos.TOP);
+            ball.setTranslateY(500);
+            clickSpace.setOnMousePressed((event) ->
+            {
+                if (event.getButton().equals(MouseButton.PRIMARY)) {
+                    this.ball.goUp();
+                }
+            });
+            this.ball.initializeMover(gameNodes, gameSpace, this::onCollisionDetected);
+            passableColor = this.ball.getColor();
+            passableColorInt = this.ball.getColIndex();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     void spawnRandomObstacle(GridPane gameSpace) {
         currentDifficultyMedian += 0.02;
@@ -144,13 +144,14 @@ public abstract class Game implements Serializable, Cloneable {
         gameNodes.add(obstacle);
     }
     void spawnSwitch(GridPane gameSpace) {
-            SerializableNode colorSwitcher = new SerializableNode(switchFile, gameSpace);
-            Switch switchController = (Switch) colorSwitcher.getController();
-            colorSwitcher.setTranslateY(heightOffset - switchController.getHeight());
-            passableColor = getRandomColorExcept();
-            switchController.setNewColor(passableColor);
-            colorSwitcher.startCollisionDetector(ball, () -> onSwitchCollected(colorSwitcher));
-            gameNodes.add(colorSwitcher);
+        SerializableNode colorSwitcher = new SerializableNode(switchFile, gameSpace);
+        Switch switchController = (Switch) colorSwitcher.getController();
+        colorSwitcher.setTranslateY(heightOffset - switchController.getHeight());
+        passableColorInt = getRandomColorExcept();
+        passableColor = Main.GAME_COLORS[passableColorInt];
+        switchController.setNewColor(passableColor);
+        colorSwitcher.startCollisionDetector(ball, () -> onSwitchCollected(colorSwitcher));
+        gameNodes.add(colorSwitcher);
     }
     void spawnStar(GridPane gameSpace) {
             SerializableNode star = new SerializableNode(starFile, gameSpace);
@@ -166,11 +167,11 @@ public abstract class Game implements Serializable, Cloneable {
     public abstract void onCollisionDetected();
     public abstract void onStarCollected(SerializableNode star);
     public abstract void onSwitchCollected(SerializableNode colorSwitch);
-    private Color getRandomColorExcept() {
-        ArrayList<Color> newCols = new ArrayList<>();
-        for (Color c : Main.GAME_COLORS) {
-            if (!c.equals(passableColor)) {
-                newCols.add(c);
+    private int getRandomColorExcept() {
+        ArrayList<Integer> newCols = new ArrayList<>();
+        for (int index = 0 ; index < Main.GAME_COLORS.length ; index++) {
+            if (index != passableColorInt) {
+                newCols.add(index);
             }
         }
         return newCols.get(Main.RANDOM.nextInt(newCols.size()));
@@ -203,7 +204,6 @@ public abstract class Game implements Serializable, Cloneable {
     public void setContinued(boolean continued) {
         this.continued = continued;
     }
-
     @Override
     protected Game clone() throws CloneNotSupportedException {
         Game clone = (Game) super.clone();

@@ -192,8 +192,7 @@ public class EndlessGame extends Game {
         Button continueButton = (Button) gameOver.lookup("#continueButton");
         continueButton.setDisable(!getPlayer().canDoTransaction(EndlessGame.continueCost) || isContinued());
         continueButton.setVisible(!isContinued());
-        continueButton.setOnMouseClicked(event ->
-        {
+        continueButton.setOnMouseClicked(event -> {
             setContinued(true);
             getPlayer().doTransaction(EndlessGame.continueCost);
             getPlayer().save();
@@ -214,11 +213,6 @@ public class EndlessGame extends Game {
         exitButton.setOnMouseClicked((this::onExit));
         getMainStage().setScene(gameOver);
         Main.makeDraggable(gameOver, getMainStage());
-        try {
-            Thread.sleep(Main.UPDATE_IN*45);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         hint.setVisible(true);
     }
     @Override

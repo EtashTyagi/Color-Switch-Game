@@ -43,12 +43,14 @@ public class Ball implements Serializable, Cloneable {
     public void setColor(Color color) {
         boolean validColor = false;
         for (int index = 0; index < Main.GAME_COLORS.length ; index++) {
-            validColor = validColor || (Main.GAME_COLORS[index] == color);
+            if (Main.GAME_COLORS[index] == color) {
+                colIndex = index;
+                validColor = true;
+                break;
+            }
         }
         if (validColor) {
             Platform.runLater(() -> ball.setFill(color));
-        } else {
-            // TODO Throw Error Here
         }
     }
     public Color getColor() {
@@ -85,6 +87,7 @@ public class Ball implements Serializable, Cloneable {
                         ballPos[1] = ball.getTranslateY();
                     });
                     ArrayList<SerializableNode> toRemoves = new ArrayList<>();
+                    ArrayList<Node> removalNodes = new ArrayList<>();
                     gameObjects.forEach((gameObject) ->
                     {
                         Platform.runLater(() -> gameObject.setTranslateY(gameObject.getTranslateY() - 1 * Main.UPDATE_IN * (curPos - half) / half));
@@ -94,16 +97,12 @@ public class Ball implements Serializable, Cloneable {
                             } else {
                                 gameObject.getController().stopCollisionDetector();
                             }
-                            Platform.runLater(() ->
-                            {
-                                gameSpace.getChildren().remove(gameObject.getNode());
-                                toRemoves.add(gameObject);
-                            });
+                            toRemoves.add(gameObject);
+                            removalNodes.add(gameObject.getNode());
                         }
                     });
-                    if (!toRemoves.isEmpty()) {
-                        gameObjects.removeAll(toRemoves);
-                    }
+                    gameObjects.removeAll(toRemoves);
+                    Platform.runLater(() -> gameSpace.getChildren().removeAll(removalNodes));
                 }
             } catch (Exception ignore) {
 
