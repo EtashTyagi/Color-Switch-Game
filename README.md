@@ -1,2 +1,3 @@
 # Color-Switch-Game
-Deadline-3 Done
+Color Switch Directory is parent (one in this directory)
+Project requires javaFX library.
