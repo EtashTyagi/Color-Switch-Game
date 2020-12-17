@@ -10,6 +10,7 @@ public class Player implements Serializable, Cloneable {
     private ArrayList<Game> savedEndlessGames = new ArrayList<>();
     private ArrayList<String> gameNames = new ArrayList<>();
     private int endlessHighScore;
+    private int totalScore;
     private String password;
     private String userName;
 
@@ -34,8 +35,22 @@ public class Player implements Serializable, Cloneable {
         assert index <= savedEndlessGames.size() && index >= 0;
         return savedEndlessGames.get(index);
     }
-    public void setEndlessHighScore(int score) {
-        this.endlessHighScore = score;
+    public int getBalance() {
+        return totalScore;
+    }
+    public void saveScore(int score) {
+        assert score >= 0;
+        totalScore+=score;
+        this.endlessHighScore = Math.max(score, endlessHighScore);
+        save();
+    }
+    public boolean canDoTransaction(int by) {
+        return by <= totalScore;
+    }
+    public void doTransaction(int by) {
+        if (canDoTransaction(by)) {
+            totalScore -= by;
+        }
     }
     public int getEndlessHighScore() {
         return endlessHighScore;

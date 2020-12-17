@@ -26,14 +26,15 @@ public class EndlessGame extends Game {
     @FXML transient private GridPane gamePane;
     @FXML transient private GridPane mainPane;
     @FXML transient private Label hint;
+    private static final int continueCost = 10;
     transient private final ImagePattern pauseUnEntered = new ImagePattern(new Image("file:Resources\\Images\\StopUE.png"));
     transient private final ImagePattern pauseEntered = new ImagePattern(new Image("file:Resources\\Images\\StopE.png"));
     transient private final AudioClip buttonESound = new AudioClip(new File("Resources\\Sound Effects\\button.wav").toURI().toString());
     transient private final AudioClip clickSound = new AudioClip(new File("Resources\\Sound Effects\\achat.wav").toURI().toString());
     transient private final AudioClip errorSound = new AudioClip(new File("Resources\\Sound Effects\\error.wav").toURI().toString());
-    private final AudioClip deadSound = new AudioClip(new File("Resources\\Sound Effects\\dead.wav").toURI().toString());
-    private final AudioClip starSound = new AudioClip(new File("Resources\\Sound Effects\\star.wav").toURI().toString());
-    private final AudioClip switchSound = new AudioClip(new File("Resources\\Sound Effects\\colorswitch.wav").toURI().toString());
+    transient private final AudioClip deadSound = new AudioClip(new File("Resources\\Sound Effects\\dead.wav").toURI().toString());
+    transient private final AudioClip starSound = new AudioClip(new File("Resources\\Sound Effects\\star.wav").toURI().toString());
+    transient private final AudioClip switchSound = new AudioClip(new File("Resources\\Sound Effects\\colorswitch.wav").toURI().toString());
     transient private Scene pauseMenu;
     transient private Scene gameOver;
     transient private ScheduledFuture<?> futureObjectMaker;
@@ -69,30 +70,31 @@ public class EndlessGame extends Game {
                 pauseButton.setFill(pauseUnEntered));
     }
     @FXML void onPausePressed() {
-        hint.setVisible(false);
         stopAllCollisionAndSpawn();
         Scene gameScene = getMainStage().getScene();
         Button backButton = (Button) pauseMenu.lookup("#resumeButton");
-        backButton.setOnMouseClicked((e) ->
-        {
-            if (e.getButton().equals(MouseButton.PRIMARY)) {
-                getMainStage().setScene(gameScene);
-                ((Button) e.getSource()).setDisable(false);
-                gamePane.setOnMouseClicked((event) ->
-                {
-                    if (event.getButton().equals(MouseButton.PRIMARY)) {
-                        startAllCollisionAndSpawn();
-                        gamePane.setOnMouseClicked((event1 -> {}));
-                    }
-                });
-            }
-        });
-
+        hint.setVisible(true);
         Button saveButton = (Button) pauseMenu.lookup("#saveButton");
         saveButton.setOnMouseClicked((e) -> {
             if (e.getButton().equals(MouseButton.PRIMARY)) {
                 onSaveGame();
                 ((Button) e.getSource()).setDisable(true);
+            }
+        });
+
+        backButton.setOnMouseClicked((e) ->
+        {
+            if (e.getButton().equals(MouseButton.PRIMARY)) {
+                getMainStage().setScene(gameScene);
+                gamePane.setOnMouseClicked((event) ->
+                {
+                    if (event.getButton().equals(MouseButton.PRIMARY)) {
+                        saveButton.setDisable(false);
+                        hint.setVisible(false);
+                        startAllCollisionAndSpawn();
+                        gamePane.setOnMouseClicked((event1 -> {}));
+                    }
+                });
             }
         });
 
@@ -134,6 +136,7 @@ public class EndlessGame extends Game {
         if (toLoad != null) {
             load(gamePane, mainPane, toLoad);
         }
+        scoreLabel.setTextFill(getBall().getColor());
         gamePane.setOnMouseClicked((event) ->
         {
             if (event.getButton().equals(MouseButton.PRIMARY)) {
@@ -159,6 +162,7 @@ public class EndlessGame extends Game {
         Scene gameScene = getMainStage().getScene();
         stopAllCollisionAndSpawn();
         deadSound.play();
+        onSaveScore();
         Button restartButton = (Button) gameOver.lookup("#restartButton");
         restartButton.setOnMouseClicked((e) -> {
             onExit(e);
@@ -178,19 +182,25 @@ public class EndlessGame extends Game {
         Label curScoreLabel = (Label) gameOver.lookup("#score");
         curScoreLabel.setText(getCurScore()+"");
 
-        Label continueCost = (Label) gameOver.lookup("#continueCost");
-        continueCost.setText("-" + Integer.toString(getCurScore()/2));
+        Label totalScore = (Label) gameOver.lookup("#totalStars");
+        totalScore.setText(getPlayer().getBalance()+"");
 
+        Label continueCost = (Label) gameOver.lookup("#continueCost");
+        continueCost.setText(Integer.toString(EndlessGame.continueCost));
         Button continueButton = (Button) gameOver.lookup("#continueButton");
+        continueButton.setDisable(!getPlayer().canDoTransaction(EndlessGame.continueCost) || isContinued());
+        continueButton.setVisible(!isContinued());
         continueButton.setOnMouseClicked(event ->
         {
-            setCurScore(getCurScore() - getCurScore()/2);
-            scoreLabel.setText(getCurScore()+"");
+            setContinued(true);
+            getPlayer().doTransaction(EndlessGame.continueCost);
+            getPlayer().save();
             if (event.getButton().equals(MouseButton.PRIMARY)) {
                 getMainStage().setScene(gameScene);
                 gamePane.setOnMouseClicked((mouseEvent) ->
                 {
                     if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                        hint.setVisible(false);
                         startAllCollisionAndSpawn();
                         gamePane.setOnMouseClicked(event1 -> {});
                     }
@@ -206,6 +216,7 @@ public class EndlessGame extends Game {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        hint.setVisible(true);
     }
     @Override
     public void onStarCollected(SerializableNode star) {
@@ -226,17 +237,13 @@ public class EndlessGame extends Game {
         switchSound.play();
     }
     @Override
-    public void onSaveScore(MouseEvent event) {
-        if (event.getButton().equals(MouseButton.PRIMARY)) {
-            getPlayer().setEndlessHighScore(Math.max(getPlayer().getEndlessHighScore(), getCurScore()));
-            getPlayer().save();
-        }
+    public void onSaveScore() {
+        getPlayer().saveScore(getCurScore());
     }
     @Override
     public void onExit(MouseEvent event) {
         if (event.getButton().equals(MouseButton.PRIMARY)) {
             super.onExit(event);
-            onSaveScore(event);
             for (SerializableNode node : getGameNodes()) {
                 gamePane.getChildren().remove(node.getNode());
             }

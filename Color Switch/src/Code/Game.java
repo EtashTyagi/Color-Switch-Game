@@ -28,6 +28,7 @@ public abstract class Game implements Serializable, Cloneable {
     private static final double difficultySD = 0.05;
     transient private Stage mainStage;
     private static final double heightOffset = -100;
+    private boolean continued = false;
     private ArrayList<SerializableNode> gameNodes = new ArrayList<>();
     transient private Color passableColor;
     private int passableColorInt;
@@ -148,7 +149,7 @@ public abstract class Game implements Serializable, Cloneable {
     ArrayList<SerializableNode> getGameNodes() {
         return gameNodes;
     }
-    public abstract void onSaveScore(MouseEvent e);
+    public abstract void onSaveScore();
     public abstract void onCollisionDetected();
     public abstract void onStarCollected(SerializableNode star);
     public abstract void onSwitchCollected(SerializableNode colorSwitch);
@@ -163,6 +164,7 @@ public abstract class Game implements Serializable, Cloneable {
     }
     public void load(GridPane gameSpace, GridPane clickSpace, Game game) {
         gameSpace.getChildren().clear();
+        continued = game.continued;
         ball = null;
         spawnBall(gameSpace, clickSpace);
         ball.load(game.ball);
@@ -182,6 +184,13 @@ public abstract class Game implements Serializable, Cloneable {
     public int getCurScore() {
         return curScore;
     }
+    public boolean isContinued() {
+        return continued;
+    }
+    public void setContinued(boolean continued) {
+        this.continued = continued;
+    }
+
     @Override
     protected Game clone() throws CloneNotSupportedException {
         Game clone = (Game) super.clone();

@@ -37,13 +37,11 @@
         <rowConstraints>
           <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
         </rowConstraints>
-         <children>
-            <Label fx:id="hint" prefHeight="235.0" prefWidth="391.0" text="Left Click To Jump" textFill="#515151" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-               <font>
-                  <Font name="Comic Sans MS Bold Italic" size="40.0" />
-               </font>
-            </Label>
-         </children>
       </GridPane>
+      <Label fx:id="hint" prefHeight="50.0" prefWidth="375.0" text="Left Click To Jump" textAlignment="CENTER" textFill="#515151" translateY="350.0" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Comic Sans MS Bold Italic" size="40.0" />
+         </font>
+      </Label>
    </children>
 </GridPane>
