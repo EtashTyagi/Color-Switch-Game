@@ -60,7 +60,7 @@ public class Ball implements Serializable, Cloneable {
     public void initializeMover(ArrayList<SerializableNode> gameObjects, Pane gameSpace, Runnable onBallDown) {
         mover = Main.scheduleForExecution(() -> {
             try {
-                if (ball.getTranslateY() <= Main.STAGE_HEIGHT - 2*radius) {
+                if (ball.getTranslateY() <= 570) {
                     Platform.runLater(() ->
                     {
                         ball.setTranslateY(ball.getTranslateY() - velocity * Main.UPDATE_IN);

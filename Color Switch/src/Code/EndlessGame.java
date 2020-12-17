@@ -149,10 +149,10 @@ public class EndlessGame extends Game {
     }
     private void stopAllCollisionAndSpawn() {
         try {
+            getBall().stop();
             futureObjectMaker.cancel(true);
         } catch (NullPointerException ignore) {
         }
-        getBall().stop();
         for (SerializableNode node : getGameNodes()) {
             node.getController().stopCollisionDetector();
         }
