@@ -107,6 +107,7 @@ public class EndlessGame extends Game {
         exitButton.setOnMouseClicked(this::onExit);
 
         getMainStage().setScene(pauseMenu);
+        Main.makeDraggable(pauseMenu, getMainStage());
     }
     private void startAllCollisionAndSpawn() {
         futureObjectMaker = Main.scheduleForExecution(gameObjectMaker, 0, 2);
@@ -212,6 +213,7 @@ public class EndlessGame extends Game {
         Button exitButton = (Button)  gameOver.lookup("#exitButton");
         exitButton.setOnMouseClicked((this::onExit));
         getMainStage().setScene(gameOver);
+        Main.makeDraggable(gameOver, getMainStage());
         try {
             Thread.sleep(Main.UPDATE_IN*45);
         } catch (Exception e) {

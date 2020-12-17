@@ -2,6 +2,7 @@ package Code;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
@@ -13,6 +14,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 public class Main extends Application {
@@ -33,34 +35,32 @@ public class Main extends Application {
         launch(args);
     }
     private void openMainMenu(Stage primaryStage) throws IOException {
-        primaryStage.setOnCloseRequest((e) ->
-        {
-            System.exit(0);
-        });
+        primaryStage.setOnCloseRequest((e) -> System.exit(0));
         FXMLLoader loader = new FXMLLoader(getClass().getResource("MainMenu.fxml"));
         Parent mainMenu = loader.load();
         MainMenu controller = loader.getController();
         controller.setMainStage(primaryStage);
         primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setTitle("Colour Switch");
-        /*
-        AtomicReference<Double> xOffset = new AtomicReference<>((double) 0);
-        AtomicReference<Double> yOffset = new AtomicReference<>((double) 0);
-        mainMenu.setOnMousePressed(event -> {
-            xOffset.set(event.getSceneX());
-            yOffset.set(event.getSceneY());
-        });
-        mainMenu.setOnMouseDragged(event -> {
-            primaryStage.setX(event.getScreenX() - xOffset.get());
-            primaryStage.setY(event.getScreenY() - yOffset.get());
-        });
-         */ // Remove comment to make dragable, implement everywhere
         primaryStage.setScene(new Scene(mainMenu, STAGE_WIDTH, STAGE_HEIGHT));
-        //primaryStage.setResizable(false);
+        makeDraggable(primaryStage.getScene(), primaryStage);
         primaryStage.show();
     }
     public static ScheduledFuture<?> scheduleForExecution(Runnable task, int initialDelay, int updateInFrames) {
         return executorService
                 .scheduleWithFixedDelay(task, UPDATE_IN*initialDelay, UPDATE_IN*updateInFrames, TimeUnit.MILLISECONDS);
+    }
+    public static void makeDraggable(Scene node, Stage primaryStage) {
+        AtomicReference<Double> xOffset = new AtomicReference<>((double) 0);
+        AtomicReference<Double> yOffset = new AtomicReference<>((double) 0);
+        node.setOnMousePressed(event -> {
+            xOffset.set(event.getSceneX());
+            yOffset.set(event.getSceneY());
+        });
+        node.setOnMouseDragged(event -> {
+            primaryStage.setX(event.getScreenX() - xOffset.get());
+            primaryStage.setY(event.getScreenY() - yOffset.get());
+        });
+
     }
 }

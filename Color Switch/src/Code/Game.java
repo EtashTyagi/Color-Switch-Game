@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class Game implements Serializable, Cloneable {
     private Player player;
@@ -68,7 +69,19 @@ public abstract class Game implements Serializable, Cloneable {
                 MainMenu controller = loader.getController();
                 controller.setMainStage(mainStage);
                 mainStage.setScene(new Scene(mainMenu, Main.STAGE_WIDTH, Main.STAGE_HEIGHT));
+                Main.makeDraggable(mainStage.getScene(), mainStage);
                 controller.setPlayer(player);
+
+                AtomicReference<Double> xOffset = new AtomicReference<>((double) 0);
+                AtomicReference<Double> yOffset = new AtomicReference<>((double) 0);
+                mainMenu.setOnMousePressed(event1 -> {
+                    xOffset.set(event.getSceneX());
+                    yOffset.set(event.getSceneY());
+                });
+                mainMenu.setOnMouseDragged(event1 -> {
+                    mainStage.setX(event.getScreenX() - xOffset.get());
+                    mainStage.setY(event.getScreenY() - yOffset.get());
+                });
             } catch (Exception e) {
                 System.out.println("Resource Deleted!");
                 e.printStackTrace();

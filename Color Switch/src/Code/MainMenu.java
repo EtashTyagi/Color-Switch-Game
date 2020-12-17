@@ -24,6 +24,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class MainMenu {
     @FXML private Label mainLabel;
@@ -131,6 +132,26 @@ public class MainMenu {
         mainMenuFuture = Main.scheduleForExecution(mainMenuAnimationTask, 10, 1);
         player = (PlayerFactory.createPlayer("Guest", "") == null) ? (PlayerFactory.validate("Guest", ""))
                 : (PlayerFactory.validate("Guest", ""));
+        AtomicReference<Double> xOffset = new AtomicReference<>((double) 0);
+        AtomicReference<Double> yOffset = new AtomicReference<>((double) 0);
+        highScoreScene.setOnMousePressed(event -> {
+            xOffset.set(event.getSceneX());
+            yOffset.set(event.getSceneY());
+        });
+        highScoreScene.setOnMouseDragged(event -> {
+            mainStage.setX(event.getScreenX() - xOffset.get());
+            mainStage.setY(event.getScreenY() - yOffset.get());
+        });
+        AtomicReference<Double> xOffset1 = new AtomicReference<>((double) 0);
+        AtomicReference<Double> yOffset1 = new AtomicReference<>((double) 0);
+        settingsScene.setOnMousePressed(event -> {
+            xOffset1.set(event.getSceneX());
+            yOffset1.set(event.getSceneY());
+        });
+        settingsScene.setOnMouseDragged(event -> {
+            mainStage.setX(event.getScreenX() - xOffset1.get());
+            mainStage.setY(event.getScreenY() - yOffset1.get());
+        });
     }
     @FXML private void onClick(MouseEvent e) throws IOException {
         clickSound.play();
@@ -330,6 +351,7 @@ public class MainMenu {
             }
         });
         mainStage.setScene(preScene);
+        Main.makeDraggable(mainStage.getScene(), mainStage);
     }
     private void startGame(Game load) throws IOException {
         FXMLLoader loader = new FXMLLoader();
