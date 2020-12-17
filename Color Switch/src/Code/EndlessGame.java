@@ -68,6 +68,7 @@ public class EndlessGame extends Game {
         });
         pauseButton.setOnMouseExited((event) ->
                 pauseButton.setFill(pauseUnEntered));
+        hint.setDisable(true);
     }
     @FXML void onPausePressed() {
         stopAllCollisionAndSpawn();
