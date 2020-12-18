@@ -8,11 +8,10 @@ import java.util.ArrayList;
 
 public class Player implements Serializable, Cloneable {
     private ArrayList<Game> savedEndlessGames = new ArrayList<>();
-    private ArrayList<String> gameNames = new ArrayList<>();
     private int endlessHighScore;
     private int totalScore;
     private String password;
-    private String userName;
+    private final String userName;
 
     public Player(String userName, String password) {
         this.userName = userName;

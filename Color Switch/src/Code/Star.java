@@ -21,7 +21,6 @@ public class Star implements Collidable {
             mainPane.setTranslateX(starRect.getTranslateX() + xOffset());
         });
     }
-    //TODO: Check For Collision
     @Override
     public boolean hasCollidedWithBall(Ball ball) {
         return CollisionDetector.ballAndRectangle(starRect, ball, mainPane.getTranslateX() + starRect.getWidth()/2,
@@ -42,7 +41,6 @@ public class Star implements Collidable {
         try {
             collisionDetector.cancel(false);
         } catch (Exception ignore) {
-
         }
     }
     @Override
